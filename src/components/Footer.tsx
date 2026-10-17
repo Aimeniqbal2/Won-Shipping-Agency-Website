@@ -8,11 +8,10 @@ import {
 } from 'lucide-react';
 
 interface FooterProps {
-  onOpenTracker: () => void;
   onOpenQuote: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenTracker, onOpenQuote }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenQuote }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -52,12 +51,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTracker, onOpenQuote }) =>
                 className="liquid-glass-btn-gold px-4 py-2 rounded-xl text-xs font-bold cursor-pointer"
               >
                 Request Quote
-              </button>
-              <button
-                onClick={onOpenTracker}
-                className="liquid-glass-pill hover:border-cyan-400 px-4 py-2 rounded-xl text-xs font-semibold text-cyan-300 cursor-pointer"
-              >
-                Track Shipment
               </button>
             </div>
           </div>
@@ -147,8 +140,22 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTracker, onOpenQuote }) =>
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-light">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-light">
           <p>© {new Date().getFullYear()} Won Shipping Agencies. All rights reserved. Connecting Ports, Moving Dreams.</p>
+
+          {/* DigiCreatix Agency Credit with Verified Link */}
+          <div className="text-xs tracking-wide flex items-center gap-1">
+            <span className="text-slate-400">Creativity Engineered by</span>
+            <a 
+              href="https://digicreatix.co" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="font-semibold text-[#0066FF] hover:text-[#3B82F6] hover:underline transition-colors ml-0.5"
+              title="Visit DigiCreatix"
+            >
+              DigiCreatix
+            </a>
+          </div>
 
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-1.5 text-emerald-400 font-medium">

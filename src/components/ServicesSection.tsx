@@ -390,10 +390,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
             </div>
 
             {/* Modal CTA */}
-            <div className="flex items-center justify-between pt-4 border-t border-white/10">
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 border-t border-white/10">
               <button
                 onClick={() => setSelectedService(null)}
-                className="text-xs text-slate-400 hover:text-white"
+                className="text-xs text-slate-400 hover:text-white py-2 text-center"
               >
                 Close Window
               </button>
@@ -404,7 +404,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
                   setSelectedService(null);
                   onSelectService(serviceName);
                 }}
-                className="liquid-glass-btn-gold px-6 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer"
+                className="liquid-glass-btn-gold px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Request Quote for {selectedService.title}</span>
                 <ArrowRight className="w-4 h-4" />

@@ -57,35 +57,40 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-2xl bg-slate-950/85 animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 backdrop-blur-2xl bg-slate-950/85 animate-fadeIn"
       onClick={onClose}
     >
       <div 
-        className="liquid-glass-card rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-6 sm:p-8 border border-white/20 relative shadow-2xl"
+        className="liquid-glass-card rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col border border-white/20 relative shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full liquid-glass-pill text-slate-300 hover:text-white cursor-pointer"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {/* Top Header Row with Pill and Close Button */}
+        <div className="flex items-center justify-between px-4 sm:px-8 pt-4 sm:pt-6 pb-2 relative z-10 shrink-0">
+          <span className="liquid-glass-pill px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold text-amber-300 uppercase tracking-wider inline-block">
+            Tailored Logistics Pricing
+          </span>
+          <button
+            onClick={onClose}
+            className="p-1.5 sm:p-2 rounded-full liquid-glass-pill text-slate-300 hover:text-white cursor-pointer transition-colors"
+            title="Close"
+          >
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        </div>
 
-        {!isSubmitted ? (
-          <div>
-            {/* Header */}
-            <div className="mb-6">
-              <span className="liquid-glass-pill px-3 py-1 rounded-full text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-2 inline-block">
-                Tailored Logistics Pricing
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-bold text-white font-heading">
-                Request an Instant Freight Quote
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-300 mt-1 font-light">
-                Direct quotation from Won Shipping Agencies Karachi headquarters.
-              </p>
-            </div>
+        {/* Scrollable Content Body with Inset Custom Scrollbar */}
+        <div className="overflow-y-auto px-4 sm:px-8 pb-5 sm:pb-8 pt-1 custom-modal-scroll flex-1">
+          {!isSubmitted ? (
+            <div>
+              {/* Header */}
+              <div className="mb-4 sm:mb-6">
+                <h3 className="text-xl sm:text-3xl font-bold text-white font-heading">
+                  Request an Instant Freight Quote
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1 font-light">
+                  Direct quotation from Won Shipping Agencies Karachi headquarters.
+                </p>
+              </div>
 
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
               {/* Service Selection */}
@@ -320,6 +325,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

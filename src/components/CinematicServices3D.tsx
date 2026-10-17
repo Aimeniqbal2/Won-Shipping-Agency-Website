@@ -39,6 +39,8 @@ export const CinematicServices3D: React.FC<CinematicServices3DProps> = ({ onActi
   const [scrollProgress, setScrollProgress] = useState(0);
   const targetFrameRef = useRef(0);
   const currentRenderedFrameRef = useRef(0);
+  const targetProgressRef = useRef(0);
+  const currentProgressRef = useRef(0);
   const lastDrawnIndexRef = useRef(-1);
   const rafIdRef = useRef<number | null>(null);
   const wasActiveRef = useRef(false);
@@ -278,6 +280,7 @@ export const CinematicServices3D: React.FC<CinematicServices3DProps> = ({ onActi
   // Smooth lerp frame loop (butter-smooth 60fps)
   useEffect(() => {
     const loop = () => {
+      // 1. Smooth 3D Canvas Video Scrub
       const target = targetFrameRef.current;
       const current = currentRenderedFrameRef.current;
       const diff = target - current;
@@ -288,6 +291,15 @@ export const CinematicServices3D: React.FC<CinematicServices3DProps> = ({ onActi
         if (frameToDraw !== lastDrawnIndexRef.current) {
           drawFrame(frameToDraw);
         }
+      }
+
+      // 2. Smooth 60fps Card Interpolation (Eliminates mobile touch jitter & hitching!)
+      const targetP = targetProgressRef.current;
+      const currentP = currentProgressRef.current;
+      const diffP = targetP - currentP;
+      if (Math.abs(diffP) > 0.0003) {
+        currentProgressRef.current = currentP + diffP * 0.22;
+        setScrollProgress(currentProgressRef.current);
       }
 
       rafIdRef.current = requestAnimationFrame(loop);
@@ -314,7 +326,9 @@ export const CinematicServices3D: React.FC<CinematicServices3DProps> = ({ onActi
       const rawProgress = scrolledY / scrollableDistance;
       const clamped = Math.min(1, Math.max(0, rawProgress));
 
-      setScrollProgress(clamped);
+      // Feed targets into RAF loop for butter-smooth decoupled 60fps interpolation
+      targetProgressRef.current = clamped;
+      targetFrameRef.current = clamped * (TOTAL_FRAMES - 1);
 
       // User requirement: Header must hide BEFORE entering this section,
       // stay hidden throughout the 3D cinematic scrub, and unhide only when fully exited.
@@ -323,9 +337,6 @@ export const CinematicServices3D: React.FC<CinematicServices3DProps> = ({ onActi
         wasActiveRef.current = isEnteringOrActive;
         onActiveChange?.(isEnteringOrActive);
       }
-
-      // Map progress directly to frames 000 -> 081
-      targetFrameRef.current = clamped * (TOTAL_FRAMES - 1);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -415,13 +426,15 @@ export const CinematicServices3D: React.FC<CinematicServices3DProps> = ({ onActi
         </div>
 
         {/* =========================================================================
-            LEFT-CENTER SERVICE CARDS (Vertically Centered on Left, Compact Fixed Width)
-            Requested by user: Left-center position, compact card width (min(420px, 90vw)),
-            does NOT stretch across screen, zero overlap with top heading!
+            LEFT-CENTER SERVICE CARDS (Smooth 60fps GPU acceleration, responsive placement)
            ========================================================================= */}
         <div 
-          className="absolute left-4 sm:left-8 md:left-12 lg:left-16 top-1/2 -translate-y-1/2 z-20 pointer-events-none"
-          style={{ width: 'min(420px, 90vw)', height: '370px' }}
+          className="absolute left-3 sm:left-6 md:left-12 lg:left-16 z-20 pointer-events-none"
+          style={{ 
+            width: 'min(420px, calc(100vw - 24px))', 
+            top: 'calc(50% + 40px)',
+            transform: 'translateY(-50%)'
+          }}
         >
           {services.map((service, index) => {
             const total = services.length;
@@ -432,113 +445,104 @@ export const CinematicServices3D: React.FC<CinematicServices3DProps> = ({ onActi
             // rel = -1 when entering from below, 0 when centered, +1 when exiting above
             const rel = (scrollProgress - cardCenter) / (segment * 0.5);
 
-            // Only render when near viewport
-            if (rel < -1.25 || rel > 1.25) return null;
-
-            // Opacity: full in center, fading in when entering, fading out when exiting
-            const opacity = Math.max(0, 1 - Math.pow(Math.abs(rel), 1.6));
-
-            // Vertical translation: enters from +25px, centers at 0, exits at -25px
-            const translateY = -rel * 25;
-
-            // 3D Tilt: tilts slightly as it enters, flattens in center, tilts up as it exits
-            const rotateX = rel * 4;
-            const rotateY = -rel * 2;
-
-            // Scale: slightly smaller on edges, 1.0 in center
-            const scale = Math.max(0.95, 1 - Math.abs(rel) * 0.05);
+            // Keep in DOM with visibility/opacity to eliminate mobile mounting stutter and image blink
+            const isNear = Math.abs(rel) <= 1.25;
+            const opacity = isNear ? Math.max(0, 1 - Math.pow(Math.abs(rel), 1.6)) : 0;
+            const translateY = isNear ? -rel * 20 : (rel > 0 ? -25 : 25);
+            const scale = isNear ? Math.max(0.96, 1 - Math.abs(rel) * 0.04) : 0.95;
 
             const Icon = service.icon;
 
             return (
               <div
                 key={service.id}
-                className="absolute inset-0 pointer-events-auto transition-all ease-out"
+                className="absolute inset-0 will-change-transform"
                 style={{
                   opacity,
-                  transform: `perspective(1000px) translateY(${translateY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`,
-                  transformOrigin: 'center center',
+                  transform: `translate3d(0, ${translateY}px, 0) scale(${scale})`,
+                  visibility: opacity > 0.01 ? 'visible' : 'hidden',
+                  pointerEvents: opacity > 0.6 ? 'auto' : 'none',
                   zIndex: index === activeServiceIndex ? 30 : 20
                 }}
               >
-                  {/* Master Liquid Glass Service Card */}
-                  <div className="liquid-glass-dock rounded-3xl p-3 sm:p-4 border border-white/20 shadow-2xl backdrop-blur-2xl">
-                    {/* Top Row: Service Number Badge + Category */}
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <div className="inline-flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 border border-amber-400/30 flex items-center justify-center font-heading font-black text-xs">
-                          {service.number}
-                        </span>
-                        <span className="font-heading font-bold text-[11px] sm:text-xs tracking-wider text-amber-300 uppercase">
-                          {service.badge}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-1.5 text-[10px] font-semibold text-cyan-300/80 bg-cyan-950/40 px-2 py-0.5 rounded-full border border-cyan-400/20">
-                        <Layers className="w-3 h-3 text-cyan-400" />
-                        <span>{index + 1} of {total}</span>
-                      </div>
+                {/* Master Liquid Glass Service Card */}
+                <div className="liquid-glass-dock rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-white/20 shadow-2xl backdrop-blur-xl">
+                  {/* Top Row: Service Number Badge + Category */}
+                  <div className="flex items-center justify-between gap-2 mb-1.5 sm:mb-2">
+                    <div className="inline-flex items-center gap-1.5 sm:gap-2">
+                      <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-amber-500/20 text-amber-400 border border-amber-400/30 flex items-center justify-center font-heading font-black text-[10px] sm:text-xs">
+                        {service.number}
+                      </span>
+                      <span className="font-heading font-bold text-[10px] sm:text-xs tracking-wider text-amber-300 uppercase">
+                        {service.badge}
+                      </span>
                     </div>
 
-                    {/* Compact Preview Image with Gradient Vignette */}
-                    <div className="relative w-full h-16 sm:h-18 rounded-xl overflow-hidden mb-2 border border-white/15 shadow-inner group">
-                      <img 
-                        src={service.image} 
-                        alt={service.title}
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#050D1A]/90 via-[#050D1A]/30 to-transparent" />
-                      
-                      {/* Floating Service Icon on Image */}
-                      <div className="absolute bottom-1.5 left-2 p-1.5 rounded-lg liquid-glass-dock border border-white/25 text-amber-400 shadow-md">
-                        <Icon className="w-3.5 h-3.5" />
-                      </div>
-                    </div>
-
-                    {/* Service Title */}
-                    <h3 className="text-base sm:text-lg font-extrabold text-white font-heading leading-tight mb-0.5">
-                      {service.title}
-                    </h3>
-
-                    {/* Tagline */}
-                    <p className="text-[11px] font-semibold text-cyan-300 mb-1 leading-snug">
-                      {service.tagline}
-                    </p>
-
-                    {/* Description */}
-                    <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed font-light mb-2 line-clamp-2">
-                      {service.description}
-                    </p>
-
-                    {/* Bullet Highlights */}
-                    <div className="space-y-1 mb-2">
-                      {service.highlights.slice(0, 2).map((item, hIdx) => (
-                        <div key={hIdx} className="flex items-start gap-1.5">
-                          <CheckCircle2 className="w-3 h-3 text-amber-400 shrink-0 mt-0.5" />
-                          <span className="text-[10px] sm:text-[11px] text-slate-200 font-medium leading-tight">
-                            {item}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Key Specifications Pill Bar */}
-                    <div className="pt-1.5 border-t border-white/10 flex flex-wrap gap-1">
-                      {service.specs.map((spec, sIdx) => (
-                        <span 
-                          key={sIdx}
-                          className="text-[9px] sm:text-[10px] font-medium text-slate-300 bg-white/5 border border-white/10 px-2 py-0.5 rounded-md"
-                        >
-                          {spec}
-                        </span>
-                      ))}
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] font-semibold text-cyan-300/80 bg-cyan-950/40 px-2 py-0.5 rounded-full border border-cyan-400/20">
+                      <Layers className="w-3 h-3 text-cyan-400" />
+                      <span>{index + 1} of {total}</span>
                     </div>
                   </div>
+
+                  {/* Compact Preview Image with Gradient Vignette */}
+                  <div className="relative w-full h-14 sm:h-18 rounded-xl overflow-hidden mb-1.5 sm:mb-2 border border-white/15 shadow-inner group">
+                    <img 
+                      src={service.image} 
+                      alt={service.title}
+                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                      loading="eager"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050D1A]/90 via-[#050D1A]/30 to-transparent" />
+                    
+                    {/* Floating Service Icon on Image */}
+                    <div className="absolute bottom-1.5 left-2 p-1 sm:p-1.5 rounded-lg liquid-glass-dock border border-white/25 text-amber-400 shadow-md">
+                      <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    </div>
+                  </div>
+
+                  {/* Service Title */}
+                  <h3 className="text-sm sm:text-lg font-extrabold text-white font-heading leading-tight mb-0.5">
+                    {service.title}
+                  </h3>
+
+                  {/* Tagline */}
+                  <p className="text-[10px] sm:text-[11px] font-semibold text-cyan-300 mb-1 leading-snug">
+                    {service.tagline}
+                  </p>
+
+                  {/* Description */}
+                  <p className="text-[10px] sm:text-xs text-slate-300 leading-relaxed font-light mb-1.5 sm:mb-2 line-clamp-2">
+                    {service.description}
+                  </p>
+
+                  {/* Bullet Highlights */}
+                  <div className="space-y-1 mb-1.5 sm:mb-2">
+                    {service.highlights.slice(0, 2).map((item, hIdx) => (
+                      <div key={hIdx} className="flex items-start gap-1.5">
+                        <CheckCircle2 className="w-3 h-3 text-amber-400 shrink-0 mt-0.5" />
+                        <span className="text-[9.5px] sm:text-[11px] text-slate-200 font-medium leading-tight">
+                          {item}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Key Specifications Pill Bar */}
+                  <div className="pt-1.5 border-t border-white/10 flex flex-wrap gap-1">
+                    {service.specs.map((spec, sIdx) => (
+                      <span 
+                        key={sIdx}
+                        className="text-[8.5px] sm:text-[10px] font-medium text-slate-300 bg-white/5 border border-white/10 px-2 py-0.5 rounded-md"
+                      >
+                        {spec}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
+        </div>
         </div>
       </section>
     );

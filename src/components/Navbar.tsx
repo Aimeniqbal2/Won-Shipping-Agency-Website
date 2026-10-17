@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   Menu, 
   X, 
-  Search, 
   Compass, 
   Layers, 
   Globe2, 
@@ -13,11 +12,10 @@ import {
 
 interface NavbarProps {
   visible: boolean;
-  onOpenTracker: () => void;
   onOpenQuote: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ visible, onOpenTracker, onOpenQuote }) => {
+export const Navbar: React.FC<NavbarProps> = ({ visible, onOpenQuote }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
@@ -66,14 +64,14 @@ export const Navbar: React.FC<NavbarProps> = ({ visible, onOpenTracker, onOpenQu
         }`}
       >
         {/* Unified Combined Liquid Glass Header Bar (Height increased per user request: ~20-30px taller + enlarged logo) */}
-        <div className="pointer-events-auto liquid-glass-dock rounded-2xl md:rounded-full px-4 sm:px-7 h-16 sm:h-[76px] flex items-center justify-between gap-3 sm:gap-6 shadow-2xl border border-white/15 backdrop-blur-2xl">
+        <div className="pointer-events-auto liquid-glass-dock rounded-2xl md:rounded-full px-3 sm:px-7 h-14 sm:h-[76px] flex items-center justify-between gap-2 sm:gap-6 shadow-2xl border border-white/15 backdrop-blur-2xl">
           
           {/* 1. Left Logo & Brand (Enlarged Ship Icon per user request) */}
           <div 
             onClick={() => scrollTo('home')}
-            className="cursor-pointer flex items-center gap-3 sm:gap-3.5 group transition-all duration-300 hover:scale-[1.02] shrink-0"
+            className="cursor-pointer flex items-center gap-2 sm:gap-3.5 group transition-all duration-300 hover:scale-[1.02] shrink-0"
           >
-            <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center shrink-0">
               <img 
                 src="/logo icon.png" 
                 alt="Won Shipping" 
@@ -81,10 +79,10 @@ export const Navbar: React.FC<NavbarProps> = ({ visible, onOpenTracker, onOpenQu
               />
             </div>
             <div className="flex flex-col justify-center leading-tight">
-              <span className="font-heading font-extrabold text-xs sm:text-base tracking-wider text-white group-hover:text-amber-400 transition-colors uppercase">
+              <span className="font-heading font-extrabold text-[11px] sm:text-base tracking-wider text-white group-hover:text-amber-400 transition-colors uppercase">
                 WON SHIPPING
               </span>
-              <span className="font-heading font-bold text-[9px] sm:text-[11px] tracking-[0.24em] text-cyan-300 uppercase mt-0.5">
+              <span className="font-heading font-bold text-[8.5px] sm:text-[11px] tracking-[0.24em] text-cyan-300 uppercase mt-0.5">
                 AGENCY
               </span>
             </div>
@@ -116,30 +114,20 @@ export const Navbar: React.FC<NavbarProps> = ({ visible, onOpenTracker, onOpenQu
           </nav>
 
           {/* 3. Right Action Buttons */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-            {/* Track Cargo Button */}
-            <button
-              onClick={onOpenTracker}
-              className="hidden sm:flex items-center gap-2 px-4 sm:px-5 h-10 sm:h-11 rounded-full text-xs sm:text-sm font-semibold text-slate-200 hover:text-white hover:bg-white/10 border border-white/10 hover:border-cyan-400/50 transition-all cursor-pointer"
-              title="Track Container / BL"
-            >
-              <Search className="w-4 h-4 text-cyan-400" />
-              <span>Track Cargo</span>
-            </button>
-
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* Request a Quote Button */}
             <button
               onClick={onOpenQuote}
-              className="liquid-glass-btn-gold px-5 sm:px-6 h-10 sm:h-11 rounded-full text-xs sm:text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-md shadow-amber-500/20 hover:scale-[1.03] transition-all"
+              className="liquid-glass-btn-gold px-3 sm:px-6 h-9 sm:h-11 rounded-full text-[11px] sm:text-sm font-bold tracking-wide flex items-center gap-1.5 sm:gap-2 cursor-pointer shadow-md shadow-amber-500/20 hover:scale-[1.03] transition-all"
             >
               <span>Get Quote</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5 text-amber-400" /> : <Menu className="w-5 h-5" />}
@@ -195,25 +183,15 @@ export const Navbar: React.FC<NavbarProps> = ({ visible, onOpenTracker, onOpenQu
             })}
           </div>
 
-          <div className="pt-5 mt-4 border-t border-white/10 grid grid-cols-2 gap-3">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenTracker();
-              }}
-              className="liquid-glass-dock py-3 rounded-xl text-xs font-semibold text-center text-cyan-300 flex items-center justify-center gap-2"
-            >
-              <Search className="w-4 h-4" />
-              <span>Track Cargo</span>
-            </button>
+          <div className="pt-5 mt-4 border-t border-white/10">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenQuote();
               }}
-              className="liquid-glass-btn-gold py-3 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5"
+              className="w-full liquid-glass-btn-gold py-3.5 rounded-xl text-sm font-bold text-center flex items-center justify-center gap-2 shadow-lg"
             >
-              <span>Get Quote</span>
+              <span>Get Instant Quote</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

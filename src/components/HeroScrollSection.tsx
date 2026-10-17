@@ -5,7 +5,6 @@ import {
   Compass, 
   ShieldCheck, 
   Globe2, 
-  Search, 
   ArrowRight,
   Sparkles,
   Zap
@@ -14,7 +13,6 @@ import {
 interface HeroScrollSectionProps {
   onScrollProgress: (progress: number, isComplete: boolean) => void;
   onOpenQuote: () => void;
-  onOpenTracker: () => void;
 }
 
 const START_FRAME = 10; // Started at 010 per user instruction
@@ -23,8 +21,7 @@ const TOTAL_SCRUB_FRAMES = END_FRAME - START_FRAME + 1; // 142 frames (10 to 151
 
 export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
   onScrollProgress,
-  onOpenQuote,
-  onOpenTracker
+  onOpenQuote
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -221,11 +218,11 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
 
       setScrollProgress(clamped);
 
-      // Scrub frames 010 -> 151 across 0.0 to 0.60
-      const scrubPhase = Math.min(1, clamped / 0.60);
+      // Scrub frames 010 -> 151 across 0.0 to 0.70
+      const scrubPhase = Math.min(1, clamped / 0.70);
       targetFrameRef.current = scrubPhase * (TOTAL_SCRUB_FRAMES - 1);
 
-      const complete = clamped >= 0.55;
+      const complete = clamped >= 0.65;
       onScrollProgress(clamped, complete);
     };
 
@@ -240,7 +237,7 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
     if (!container) return;
     const rect = container.getBoundingClientRect();
     const scrollableDistance = rect.height - window.innerHeight;
-    const targetScrollY = window.scrollY + rect.top + (scrollableDistance * 0.68);
+    const targetScrollY = window.scrollY + rect.top + (scrollableDistance * 0.75);
     window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
   };
 
@@ -250,16 +247,16 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
   // Scroll Down Indicator: Appears when loaded, stays visible during frame scroll, fades out as hero docks
   const scrollDownOpacity = !isLoaded 
     ? 0 
-    : scrollProgress >= 0.52 
+    : scrollProgress >= 0.60 
       ? 0 
-      : Math.max(0, 1 - Math.max(0, (scrollProgress - 0.44) / 0.08));
+      : Math.max(0, 1 - Math.max(0, (scrollProgress - 0.52) / 0.08));
 
   return (
     <section 
       ref={containerRef}
       id="home"
       className="relative w-full"
-      style={{ height: '320vh' }}
+      style={{ height: '230vh' }}
     >
       {/* Sticky Fullscreen Canvas Container */}
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#030810]">
@@ -381,10 +378,10 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
         {/* 1. Static Full-Screen Dark Navy Atmosphere Overlay (Zero Blur - Consistent Opacity as requested) */}
         <div 
           className={`absolute inset-0 z-10 transition-opacity duration-700 pointer-events-none ${
-            scrollProgress > 0.50 ? 'opacity-100' : 'opacity-0'
+            scrollProgress > 0.58 ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
-            opacity: Math.min(1, Math.max(0, (scrollProgress - 0.48) / 0.12))
+            opacity: Math.min(1, Math.max(0, (scrollProgress - 0.56) / 0.12))
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-[#050D1A]/95 via-[#050D1A]/65 to-[#050D1A]/35" />
@@ -393,50 +390,50 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
         {/* 2. Docked Hero Content Grid (Smooth Subtle Fade & Gentle Reveal with generous top clearance) */}
         <div 
           className={`absolute inset-0 z-20 flex flex-col justify-start px-4 md:px-12 transition-all duration-700 ${
-            scrollProgress > 0.50
+            scrollProgress > 0.58
               ? 'opacity-100 pointer-events-auto' 
               : 'opacity-0 pointer-events-none'
           }`}
           style={{
-            opacity: Math.min(1, Math.max(0, (scrollProgress - 0.50) / 0.12)),
-            transform: `translateY(${Math.max(0, (1 - Math.min(1, Math.max(0, (scrollProgress - 0.50) / 0.12))) * 12)}px)`
+            opacity: Math.min(1, Math.max(0, (scrollProgress - 0.58) / 0.12)),
+            transform: `translateY(${Math.max(0, (1 - Math.min(1, Math.max(0, (scrollProgress - 0.58) / 0.12))) * 12)}px)`
           }}
         >
           {/* Inner Content Grid with generous top spacing below header as requested */}
-          <div className="relative z-10 max-w-7xl mx-auto w-full pt-32 sm:pt-36 md:pt-40 lg:pt-44 pb-12 flex flex-col justify-between h-full">
+          <div className="relative z-10 max-w-7xl mx-auto w-full pt-20 sm:pt-28 md:pt-36 lg:pt-44 pb-6 sm:pb-12 flex flex-col justify-between h-full">
             <div className="max-w-3xl">
               {/* Badge (Open clearance below header line) */}
-              <div className="inline-flex items-center gap-2.5 liquid-glass-dock px-3.5 py-1.5 rounded-full mb-3 sm:mb-3.5 border border-white/20">
+              <div className="inline-flex items-center gap-2 liquid-glass-dock px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full mb-2.5 sm:mb-3.5 border border-white/20">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[11px] sm:text-xs font-semibold tracking-wider text-amber-300 uppercase font-heading">
+                <span className="text-[10px] sm:text-xs font-semibold tracking-wider text-amber-300 uppercase font-heading">
                   FCL & NVOCC Representative
                 </span>
                 <span className="text-slate-500">•</span>
-                <span className="text-[11px] sm:text-xs text-cyan-300 font-medium hidden sm:inline">
+                <span className="text-[10px] sm:text-xs text-cyan-300 font-medium hidden sm:inline">
                   Licensed Multimodal Operator
                 </span>
               </div>
 
               {/* Main Heading */}
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-[1.12] tracking-tight mb-2.5 sm:mb-3">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-[1.12] tracking-tight mb-2 sm:mb-3">
                 Moving the World <br />
                 <span className="text-gradient-gold">Forward</span> with Precision
               </h1>
 
               {/* Subheading */}
-              <p className="text-slate-200 text-xs sm:text-sm md:text-base font-body leading-relaxed mb-3.5 sm:mb-4 max-w-2xl font-light drop-shadow line-clamp-2 sm:line-clamp-none">
+              <p className="text-slate-200 text-xs sm:text-sm md:text-base font-body leading-relaxed mb-3 sm:mb-4 max-w-2xl font-light drop-shadow line-clamp-2 sm:line-clamp-none">
                 Won Shipping Agencies proudly leads maritime logistics as a premier FCL and NVOCC representative, international freight forwarder, and multimodal operator strategically based in Pakistan.
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-4 sm:mb-5">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-5">
                 <button
                   onClick={onOpenQuote}
-                  className="liquid-glass-btn-gold px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer shadow-xl shadow-amber-500/25 hover:scale-[1.02] transition-all"
+                  className="liquid-glass-btn-gold px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 cursor-pointer shadow-xl shadow-amber-500/25 hover:scale-[1.02] transition-all"
                 >
-                  <Zap className="w-4 h-4" />
+                  <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   <span>Request Instant Freight Quote</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
 
                 <button
@@ -444,41 +441,33 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
                     const el = document.getElementById('services');
                     el?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="liquid-glass-btn-ocean px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 cursor-pointer hover:border-cyan-400/50 transition-all"
+                  className="liquid-glass-btn-ocean px-3.5 sm:px-5 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 sm:gap-2 cursor-pointer hover:border-cyan-400/50 transition-all"
                 >
-                  <Compass className="w-4 h-4 text-cyan-300" />
+                  <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-300" />
                   <span>Explore Services</span>
-                </button>
-
-                <button
-                  onClick={onOpenTracker}
-                  className="liquid-glass-dock hover:border-cyan-400 px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-100 hover:text-white flex items-center gap-2 transition-all cursor-pointer shadow-md"
-                >
-                  <Search className="w-4 h-4 text-cyan-400" />
-                  <span>Track Cargo</span>
                 </button>
               </div>
             </div>
 
             {/* 4 Floating Liquid Glass Metric Cards (Spaced above bottom arrow) */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5 mb-2">
-              <div className="liquid-glass-dock rounded-2xl p-3 sm:p-3.5 flex items-start gap-3 border border-white/20">
-                <div className="p-2 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-400/25 shrink-0">
-                  <Globe2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3.5 mb-1 sm:mb-2">
+              <div className="liquid-glass-dock rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-start gap-2 sm:gap-3 border border-white/20">
+                <div className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-400/25 shrink-0">
+                  <Globe2 className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <p className="font-heading font-extrabold text-base sm:text-lg text-white">120+</p>
-                  <p className="text-[10px] sm:text-[11px] text-slate-300 font-medium">Global Ports Network</p>
+                  <p className="font-heading font-extrabold text-sm sm:text-lg text-white">120+</p>
+                  <p className="text-[9px] sm:text-[11px] text-slate-300 font-medium">Global Ports Network</p>
                 </div>
               </div>
 
-              <div className="liquid-glass-dock rounded-2xl p-3 sm:p-3.5 flex items-start gap-3 border border-white/20">
-                <div className="p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-400/25 shrink-0">
-                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="liquid-glass-dock rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-start gap-2 sm:gap-3 border border-white/20">
+                <div className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-amber-500/15 text-amber-400 border border-amber-400/25 shrink-0">
+                  <Sparkles className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <p className="font-heading font-extrabold text-base sm:text-lg text-amber-300">TIR Carnet</p>
-                  <p className="text-[10px] sm:text-[11px] text-slate-300 font-medium">Central Asia Road Link</p>
+                  <p className="font-heading font-extrabold text-sm sm:text-lg text-amber-300">TIR Carnet</p>
+                  <p className="text-[9px] sm:text-[11px] text-slate-300 font-medium">Central Asia Road Link</p>
                 </div>
               </div>
 

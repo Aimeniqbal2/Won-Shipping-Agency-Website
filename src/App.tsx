@@ -9,13 +9,11 @@ import { ServicesSection } from './components/ServicesSection';
 import { TirCorridorSection } from './components/TirCorridorSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
-import { CargoTrackerModal } from './components/CargoTrackerModal';
 import { QuoteModal } from './components/QuoteModal';
 
 export function App() {
   const [navbarVisible, setNavbarVisible] = useState(false);
   const [isCinematicActive, setIsCinematicActive] = useState(false);
-  const [trackerOpen, setTrackerOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [selectedServiceForQuote, setSelectedServiceForQuote] = useState<string>('');
 
@@ -45,7 +43,6 @@ export function App() {
       {/* 1. Floating Apple/Mac Dock Liquid Glass Navbar */}
       <Navbar 
         visible={navbarVisible && !isCinematicActive}
-        onOpenTracker={() => setTrackerOpen(true)}
         onOpenQuote={handleGeneralOpenQuote}
       />
 
@@ -53,7 +50,6 @@ export function App() {
       <HeroScrollSection 
         onScrollProgress={handleScrollProgress}
         onOpenQuote={handleGeneralOpenQuote}
-        onOpenTracker={() => setTrackerOpen(true)}
       />
 
       {/* Main Corporate Content Sections (Fluidly following the 3D Dock) */}
@@ -82,16 +78,10 @@ export function App() {
 
       {/* 8. Liquid Glass Footer */}
       <Footer 
-        onOpenTracker={() => setTrackerOpen(true)}
         onOpenQuote={handleGeneralOpenQuote}
       />
 
       {/* 9. Interactive Modals */}
-      <CargoTrackerModal 
-        isOpen={trackerOpen}
-        onClose={() => setTrackerOpen(false)}
-      />
-
       <QuoteModal 
         isOpen={quoteOpen}
         onClose={() => setQuoteOpen(false)}
@@ -102,3 +92,4 @@ export function App() {
 }
 
 export default App;
+
