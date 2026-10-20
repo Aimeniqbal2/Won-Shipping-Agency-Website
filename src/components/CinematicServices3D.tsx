@@ -365,9 +365,13 @@ export const CinematicServices3D: React.FC<CinematicServices3DProps> = ({ onActi
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
 
-        {/* Ambient Dark Navy Vignette for Legibility */}
-        <div className="absolute inset-0 pointer-events-none z-10 bg-gradient-to-r from-[#030810]/85 via-[#030810]/35 to-transparent" />
+        {/* Ambient Maritime Navy Vignette for Legibility */}
+        <div className="absolute inset-0 pointer-events-none z-10 bg-gradient-to-r from-[#07172C]/75 via-[#07172C]/25 to-transparent" />
         <div className="absolute inset-0 pointer-events-none z-10 bg-radial-[circle_at_25%_50%,rgba(0,180,216,0.06)_0%,transparent_60%]" />
+
+        {/* Top & Bottom Smooth Gradient Blends into prominent maritime light blue sections */}
+        <div className="absolute top-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-b from-[#A2CEF6] via-[#A2CEF6]/40 to-transparent z-15 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-[#91C7F5] via-[#91C7F5]/40 to-transparent z-15 pointer-events-none" />
 
         {/* =========================================================================
             RIGHT-SIDE HUD: PROGRESS TRACKER (Shows current step 01-07 without obstructing ship)

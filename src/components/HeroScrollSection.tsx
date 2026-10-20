@@ -4,10 +4,11 @@ import {
   Anchor, 
   Compass, 
   ShieldCheck, 
-  Globe2, 
+  Globe2,
   ArrowRight,
   Sparkles,
-  Zap
+  Zap,
+  CheckCircle2
 } from 'lucide-react';
 
 interface HeroScrollSectionProps {
@@ -29,6 +30,24 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
   
   const [isLoaded, setIsLoaded] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Quick Quote Form State for Hero Section
+  const [quickQuote, setQuickQuote] = useState({
+    service: 'Ocean Freight FCL',
+    origin: 'Karachi Port (KPT/PQA)',
+    destination: 'Tashkent, Central Asia',
+    equipment: '40ft High Cube (40HC)',
+    contact: ''
+  });
+  const [quickQuoteSubmitted, setQuickQuoteSubmitted] = useState(false);
+  const [quoteReference, setQuoteReference] = useState('');
+
+  const handleQuickQuoteSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const refCode = `WSA-${Math.floor(10000 + Math.random() * 90000)}`;
+    setQuoteReference(refCode);
+    setQuickQuoteSubmitted(true);
+  };
 
   // Lock window scroll while loading is in progress per user requirement
   useEffect(() => {
@@ -375,7 +394,7 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
             2. Content has ample top padding (pt-28 sm:pt-32 md:pt-36) so top badge and heading
                never overlap or go behind the taller header!
            ========================================================================= */}
-        {/* 1. Static Full-Screen Dark Navy Atmosphere Overlay (Zero Blur - Consistent Opacity as requested) */}
+        {/* 1. Static Full-Screen Maritime Atmosphere Overlay (Lighter & Brighter to let 3D ship shine through) */}
         <div 
           className={`absolute inset-0 z-10 transition-opacity duration-700 pointer-events-none ${
             scrollProgress > 0.58 ? 'opacity-100' : 'opacity-0'
@@ -384,12 +403,12 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
             opacity: Math.min(1, Math.max(0, (scrollProgress - 0.56) / 0.12))
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050D1A]/95 via-[#050D1A]/65 to-[#050D1A]/35" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#07172C]/85 via-[#07172C]/40 to-transparent" />
         </div>
 
         {/* 2. Docked Hero Content Grid (Smooth Subtle Fade & Gentle Reveal with generous top clearance) */}
         <div 
-          className={`absolute inset-0 z-20 flex flex-col justify-start px-4 md:px-12 transition-all duration-700 ${
+          className={`absolute inset-0 z-20 flex flex-col justify-between px-4 sm:px-6 md:px-10 lg:px-12 transition-all duration-700 ${
             scrollProgress > 0.58
               ? 'opacity-100 pointer-events-auto' 
               : 'opacity-0 pointer-events-none'
@@ -399,95 +418,271 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
             transform: `translateY(${Math.max(0, (1 - Math.min(1, Math.max(0, (scrollProgress - 0.58) / 0.12))) * 12)}px)`
           }}
         >
-          {/* Inner Content Grid with generous top spacing below header as requested */}
-          <div className="relative z-10 max-w-7xl mx-auto w-full pt-20 sm:pt-28 md:pt-36 lg:pt-44 pb-6 sm:pb-12 flex flex-col justify-between h-full">
-            <div className="max-w-3xl">
-              {/* Badge (Open clearance below header line) */}
-              <div className="inline-flex items-center gap-2 liquid-glass-dock px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full mb-2.5 sm:mb-3.5 border border-white/20">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[10px] sm:text-xs font-semibold tracking-wider text-amber-300 uppercase font-heading">
-                  FCL & NVOCC Representative
-                </span>
-                <span className="text-slate-500">•</span>
-                <span className="text-[10px] sm:text-xs text-cyan-300 font-medium hidden sm:inline">
-                  Licensed Multimodal Operator
-                </span>
+          {/* Inner Content Grid with generous top spacing below header */}
+          <div className="relative z-10 max-w-7xl mx-auto w-full pt-16 sm:pt-24 md:pt-28 lg:pt-32 pb-4 sm:pb-8 flex flex-col justify-between h-full">
+            
+            {/* 2-Column Responsive Layout: Left = Headline & Value Prop, Right = Floating Transparent Quick Quote Form */}
+            <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-center my-auto py-1">
+              
+              {/* Left Column (7 cols): Headline, Slogan, and CTAs */}
+              <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+                {/* Badge (Open clearance below header line) */}
+                <div className="inline-flex items-center gap-2 liquid-glass-dock px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/20">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[10px] sm:text-xs font-semibold tracking-wider text-amber-300 uppercase font-heading">
+                    FCL & NVOCC Representative
+                  </span>
+                  <span className="text-slate-400">•</span>
+                  <span className="text-[10px] sm:text-xs text-cyan-300 font-medium hidden sm:inline">
+                    Licensed Multimodal Operator
+                  </span>
+                </div>
+
+                {/* Main Heading */}
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-extrabold text-white leading-[1.12] tracking-tight drop-shadow-md">
+                  Moving the World <br className="hidden sm:inline" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-amber-500">
+                    Forward
+                  </span> with Precision
+                </h1>
+
+                {/* Subheading */}
+                <p className="text-slate-200 text-xs sm:text-sm md:text-[15px] font-body leading-relaxed max-w-xl font-light drop-shadow-md">
+                  Won Shipping Agencies proudly leads maritime logistics as a premier FCL and NVOCC representative, international freight forwarder, and multimodal operator strategically based in Pakistan.
+                </p>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 pt-1">
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById('services');
+                      el?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="liquid-glass-btn-gold px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer shadow-lg shadow-orange-500/25 hover:scale-[1.02] transition-all"
+                  >
+                    <Compass className="w-4 h-4 text-white" />
+                    <span>Explore Services</span>
+                    <ArrowRight className="w-4 h-4 text-white" />
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById('tir');
+                      el?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="liquid-glass-btn-ocean px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 cursor-pointer hover:border-cyan-400/50 transition-all"
+                  >
+                    <Globe2 className="w-4 h-4 text-cyan-300" />
+                    <span>TIR Silk Route</span>
+                  </button>
+                </div>
               </div>
 
-              {/* Main Heading */}
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-[1.12] tracking-tight mb-2 sm:mb-3">
-                Moving the World <br />
-                <span className="text-gradient-gold">Forward</span> with Precision
-              </h1>
+              {/* Right Column (5 cols): Floating Transparent Quick Quote Form */}
+              <div className="lg:col-span-5 w-full">
+                <div className="hero-glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-white/25 shadow-2xl relative">
+                  {/* Subtle top indicator */}
+                  <div className="flex items-center justify-between mb-2.5">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-orange-500/20 border border-orange-400/40 text-[10px] sm:text-[11px] font-bold text-orange-300">
+                      <Zap className="w-3 h-3 text-orange-400" />
+                      <span>Instant Rate Estimator</span>
+                    </div>
+                    <span className="text-[10px] text-slate-300 font-mono">Karachi HQ Desk</span>
+                  </div>
 
-              {/* Subheading */}
-              <p className="text-slate-200 text-xs sm:text-sm md:text-base font-body leading-relaxed mb-3 sm:mb-4 max-w-2xl font-light drop-shadow line-clamp-2 sm:line-clamp-none">
-                Won Shipping Agencies proudly leads maritime logistics as a premier FCL and NVOCC representative, international freight forwarder, and multimodal operator strategically based in Pakistan.
-              </p>
+                  {!quickQuoteSubmitted ? (
+                    <form onSubmit={handleQuickQuoteSubmit} className="space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-base sm:text-lg font-heading font-extrabold text-white">
+                          Get a Quick Quote
+                        </h3>
+                        <span className="text-[10px] text-emerald-400 flex items-center gap-1 font-medium">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          Live Priority
+                        </span>
+                      </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-5">
-                <button
-                  onClick={onOpenQuote}
-                  className="liquid-glass-btn-gold px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 cursor-pointer shadow-xl shadow-amber-500/25 hover:scale-[1.02] transition-all"
-                >
-                  <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  <span>Request Instant Freight Quote</span>
-                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </button>
+                      {/* 1. Service Type */}
+                      <div>
+                        <label className="text-[10px] font-bold uppercase tracking-wider text-slate-300 block mb-1">
+                          Service Mode
+                        </label>
+                        <select
+                          value={quickQuote.service}
+                          onChange={(e) => setQuickQuote({ ...quickQuote, service: e.target.value })}
+                          className="w-full hero-glass-input rounded-xl px-3 py-2 text-xs text-white"
+                        >
+                          <option value="Ocean Freight FCL" className="bg-[#0B2545] text-white">Ocean Freight FCL (Full Container)</option>
+                          <option value="Ocean Freight LCL" className="bg-[#0B2545] text-white">Ocean Freight LCL (Consolidation)</option>
+                          <option value="Air Freight Express" className="bg-[#0B2545] text-white">Air Freight Expedited Charter</option>
+                          <option value="Central Asia TIR Transit" className="bg-[#0B2545] text-white">Central Asia TIR Carnet Transit</option>
+                          <option value="Custom Clearance & Brokerage" className="bg-[#0B2545] text-white">Customs Clearance & PSW Port Filing</option>
+                          <option value="Special Equipment & Out-Of-Gauge" className="bg-[#0B2545] text-white">Special Equipment (Flat Rack / Open Top)</option>
+                        </select>
+                      </div>
 
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('services');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="liquid-glass-btn-ocean px-3.5 sm:px-5 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 sm:gap-2 cursor-pointer hover:border-cyan-400/50 transition-all"
-                >
-                  <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-300" />
-                  <span>Explore Services</span>
-                </button>
+                      {/* 2. Origin & Destination Row */}
+                      <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
+                        <div>
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-300 block mb-1">
+                            Origin Port / City
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={quickQuote.origin}
+                            onChange={(e) => setQuickQuote({ ...quickQuote, origin: e.target.value })}
+                            placeholder="e.g. Karachi (KPT/PQA)"
+                            className="w-full hero-glass-input rounded-xl px-3 py-2 text-xs text-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-300 block mb-1">
+                            Destination Port / City
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={quickQuote.destination}
+                            onChange={(e) => setQuickQuote({ ...quickQuote, destination: e.target.value })}
+                            placeholder="e.g. Tashkent, Uzbekistan"
+                            className="w-full hero-glass-input rounded-xl px-3 py-2 text-xs text-white"
+                          />
+                        </div>
+                      </div>
+
+                      {/* 3. Container Equipment & Contact */}
+                      <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
+                        <div>
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-300 block mb-1">
+                            Equipment / Cargo
+                          </label>
+                          <select
+                            value={quickQuote.equipment}
+                            onChange={(e) => setQuickQuote({ ...quickQuote, equipment: e.target.value })}
+                            className="w-full hero-glass-input rounded-xl px-3 py-2 text-xs text-white"
+                          >
+                            <option value="40ft High Cube (40HC)" className="bg-[#0B2545] text-white">40ft High Cube (40HC)</option>
+                            <option value="20ft Standard (20GP)" className="bg-[#0B2545] text-white">20ft Standard (20GP)</option>
+                            <option value="Open Top / Flat Rack" className="bg-[#0B2545] text-white">Open Top / Flat Rack</option>
+                            <option value="Reefer Container" className="bg-[#0B2545] text-white">Reefer Container</option>
+                            <option value="LCL / Air Pallets" className="bg-[#0B2545] text-white">LCL / Air Palletized</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-300 block mb-1">
+                            Phone / WhatsApp *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={quickQuote.contact}
+                            onChange={(e) => setQuickQuote({ ...quickQuote, contact: e.target.value })}
+                            placeholder="+92 300 0000000"
+                            className="w-full hero-glass-input rounded-xl px-3 py-2 text-xs text-white"
+                          />
+                        </div>
+                      </div>
+
+                      {/* 4. Submit Button */}
+                      <button
+                        type="submit"
+                        className="w-full mt-1.5 corporate-btn-orange py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg hover:scale-[1.01] transition-all"
+                      >
+                        <Zap className="w-4 h-4" />
+                        <span>Calculate Rate & Transmit</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+
+                      <div className="flex items-center justify-between text-[10px] text-slate-300 pt-0.5">
+                        <span className="flex items-center gap-1 text-slate-300">
+                          <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                          Direct Operator Rate
+                        </span>
+                        <button
+                          type="button"
+                          onClick={onOpenQuote}
+                          className="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-2 cursor-pointer"
+                        >
+                          Detailed Quote Form
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <div className="py-4 text-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-400/30 flex items-center justify-center mx-auto">
+                        <CheckCircle2 className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h4 className="font-heading font-extrabold text-base text-white">
+                          Quote Request Transmitted!
+                        </h4>
+                        <p className="text-xs text-amber-300 font-mono mt-0.5">
+                          Ref #{quoteReference}
+                        </p>
+                        <p className="text-[11px] text-slate-200 mt-1.5 leading-relaxed">
+                          Our Karachi operations desk has received your request for <strong>{quickQuote.origin} ➔ {quickQuote.destination}</strong>. A customized tariff sheet will be transmitted to <strong>{quickQuote.contact}</strong> within 30 minutes.
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-center gap-2 pt-1">
+                        <button
+                          onClick={() => setQuickQuoteSubmitted(false)}
+                          className="hero-glass-input px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-200 hover:text-white cursor-pointer"
+                        >
+                          New Quote
+                        </button>
+                        <button
+                          onClick={onOpenQuote}
+                          className="corporate-btn-orange px-3.5 py-1.5 rounded-xl text-xs font-semibold cursor-pointer"
+                        >
+                          Full Form
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
             {/* 4 Floating Liquid Glass Metric Cards (Spaced above bottom arrow) */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3.5 mb-1 sm:mb-2">
-              <div className="liquid-glass-dock rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-start gap-2 sm:gap-3 border border-white/20">
-                <div className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-400/25 shrink-0">
+              <div className="liquid-glass-dock rounded-xl sm:rounded-2xl p-2 sm:p-3 flex items-start gap-2 sm:gap-3 border border-white/20">
+                <div className="p-1.5 rounded-lg sm:rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-400/25 shrink-0">
                   <Globe2 className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <p className="font-heading font-extrabold text-sm sm:text-lg text-white">120+</p>
-                  <p className="text-[9px] sm:text-[11px] text-slate-300 font-medium">Global Ports Network</p>
+                  <p className="font-heading font-extrabold text-sm sm:text-base text-white">120+</p>
+                  <p className="text-[9px] sm:text-[10px] text-slate-300 font-medium">Global Ports Network</p>
                 </div>
               </div>
 
-              <div className="liquid-glass-dock rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-start gap-2 sm:gap-3 border border-white/20">
-                <div className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-amber-500/15 text-amber-400 border border-amber-400/25 shrink-0">
+              <div className="liquid-glass-dock rounded-xl sm:rounded-2xl p-2 sm:p-3 flex items-start gap-2 sm:gap-3 border border-white/20">
+                <div className="p-1.5 rounded-lg sm:rounded-xl bg-amber-500/15 text-amber-400 border border-amber-400/25 shrink-0">
                   <Sparkles className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <p className="font-heading font-extrabold text-sm sm:text-lg text-amber-300">TIR Carnet</p>
-                  <p className="text-[9px] sm:text-[11px] text-slate-300 font-medium">Central Asia Road Link</p>
+                  <p className="font-heading font-extrabold text-sm sm:text-base text-amber-300">TIR Carnet</p>
+                  <p className="text-[9px] sm:text-[10px] text-slate-300 font-medium">Central Asia Road Link</p>
                 </div>
               </div>
 
-              <div className="liquid-glass-dock rounded-2xl p-3 sm:p-3.5 flex items-start gap-3 border border-white/20">
-                <div className="p-2 rounded-xl bg-blue-500/15 text-blue-400 border border-blue-400/25 shrink-0">
-                  <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="liquid-glass-dock rounded-xl sm:rounded-2xl p-2 sm:p-3 flex items-start gap-2 sm:gap-3 border border-white/20">
+                <div className="p-1.5 rounded-lg sm:rounded-xl bg-blue-500/15 text-blue-400 border border-blue-400/25 shrink-0">
+                  <ShieldCheck className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <p className="font-heading font-extrabold text-base sm:text-lg text-white">Licensed</p>
-                  <p className="text-[10px] sm:text-[11px] text-slate-300 font-medium">NVOCC & Custom Broker</p>
+                  <p className="font-heading font-extrabold text-sm sm:text-base text-white">Licensed</p>
+                  <p className="text-[9px] sm:text-[10px] text-slate-300 font-medium">NVOCC & Custom Broker</p>
                 </div>
               </div>
 
-              <div className="liquid-glass-dock rounded-2xl p-3 sm:p-3.5 flex items-start gap-3 border border-white/20">
-                <div className="p-2 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-400/25 shrink-0">
-                  <Anchor className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="liquid-glass-dock rounded-xl sm:rounded-2xl p-2 sm:p-3 flex items-start gap-2 sm:gap-3 border border-white/20">
+                <div className="p-1.5 rounded-lg sm:rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-400/25 shrink-0">
+                  <Anchor className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <p className="font-heading font-extrabold text-base sm:text-lg text-white">24 / 7</p>
-                  <p className="text-[10px] sm:text-[11px] text-slate-300 font-medium">Port Dispatch & Tracking</p>
+                  <p className="font-heading font-extrabold text-sm sm:text-base text-white">24 / 7</p>
+                  <p className="text-[9px] sm:text-[10px] text-slate-300 font-medium">Port Dispatch & Tracking</p>
                 </div>
               </div>
             </div>

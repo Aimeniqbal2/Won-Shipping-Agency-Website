@@ -183,7 +183,7 @@ export const CargoTrackerModal: React.FC<CargoTrackerModalProps> = ({ isOpen, on
             <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/10">
               <div className="flex items-center gap-2 text-xs text-slate-400 font-light">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Verified by Pakistan Port Authority & Won Shipping Agency</span>
+                <span>Verified by Pakistan Port Authority & Won Shipping Agencies</span>
               </div>
               <a 
                 href="mailto:Anas@wonshippingagencies.com?subject=Tracking Inquiry for WSA-98214-PK"

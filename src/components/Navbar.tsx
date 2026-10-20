@@ -82,8 +82,8 @@ export const Navbar: React.FC<NavbarProps> = ({ visible, onOpenQuote }) => {
               <span className="font-heading font-extrabold text-[11px] sm:text-base tracking-wider text-white group-hover:text-amber-400 transition-colors uppercase">
                 WON SHIPPING
               </span>
-              <span className="font-heading font-bold text-[8.5px] sm:text-[11px] tracking-[0.24em] text-cyan-300 uppercase mt-0.5">
-                AGENCY
+              <span className="font-heading font-bold text-[8.5px] sm:text-[11px] tracking-[0.24em] text-[#FB923C] uppercase mt-0.5">
+                AGENCIES
               </span>
             </div>
           </div>

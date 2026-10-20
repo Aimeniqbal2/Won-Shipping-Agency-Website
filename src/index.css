@@ -2,12 +2,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-deep-navy: #050D1A;
-  --color-navy-surface: #0A192F;
-  --color-navy-card: #0D1E36;
+  --color-deep-navy: #07172C;
+  --color-navy-surface: #0B2545;
+  --color-navy-card: #0F325E;
   --color-warm-gold: #D4AF37;
   --color-gold-glow: #F59E0B;
-  --color-ocean-blue: #0077B6;
+  --color-brand-orange: #F97316;
+  --color-brand-orange-deep: #EA580C;
+  --color-brand-orange-light: #FB923C;
+  --color-ocean-blue: #0284C7;
   --color-cyan-glow: #00B4D8;
   --color-very-dark-navy: #030810;
   --font-heading: "Outfit", sans-serif;
@@ -18,13 +21,8 @@
 @layer base {
   body {
     font-family: var(--font-body);
-    color: #F1F5F9;
-    background-color: #050D1A;
-    background-image: 
-      radial-gradient(ellipse at 50% -20%, rgba(0, 119, 182, 0.18) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 60%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 20% 80%, rgba(0, 180, 216, 0.08) 0%, transparent 50%);
-    background-attachment: fixed;
+    color: #1E293B;
+    background-color: #F8FAFC;
     min-height: 100vh;
   }
   h1, h2, h3, h4, h5, h6 {
@@ -33,28 +31,105 @@
 }
 
 /* =========================================================================
-   LIQUID GLASS DESIGN SYSTEM
+   MARITIME & LIQUID GLASS DESIGN SYSTEM
    ========================================================================= */
+
+/* Hero Transparent Glass Card (Preserves 3D Ship Background Visibility) */
+.hero-glass-card {
+  background: rgba(7, 23, 44, 0.42);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.55),
+    0 1px 0 0 rgba(255, 255, 255, 0.25) inset;
+}
+
+/* Hero Glass Input: Transparent by default, fills with solid bold navy & safety-orange focus ring on click! */
+.hero-glass-input {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-glass-input::placeholder {
+  color: rgba(226, 232, 240, 0.75);
+}
+
+.hero-glass-input:focus {
+  outline: none;
+  background: #0B2545 !important;
+  border-color: #F97316 !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.4), 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+  color: #FFFFFF !important;
+}
 
 /* Liquid Glass Floating Apple/Mac Dock Navigation (Original Sleek Deep Navy Glass) */
 .liquid-glass-dock {
-  background: rgba(8, 19, 36, 0.72);
+  background: rgba(11, 37, 69, 0.88);
   backdrop-filter: blur(28px) saturate(190%);
   -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow: 
-    0 20px 45px -10px rgba(0, 0, 0, 0.6),
-    0 1px 0 0 rgba(255, 255, 255, 0.25) inset,
-    0 -1px 0 0 rgba(0, 0, 0, 0.4) inset,
-    0 0 25px rgba(0, 180, 216, 0.08);
+    0 20px 45px -10px rgba(0, 0, 0, 0.4),
+    0 1px 0 0 rgba(255, 255, 255, 0.3) inset,
+    0 -1px 0 0 rgba(0, 0, 0, 0.3) inset,
+    0 0 25px rgba(249, 115, 22, 0.12);
 }
 
-/* Liquid Glass Surface Card */
+/* Light Corporate Surface Card */
+.corporate-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 10px 30px -5px rgba(11, 37, 69, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.corporate-card:hover {
+  border-color: rgba(249, 115, 22, 0.4);
+  box-shadow: 0 20px 40px -10px rgba(11, 37, 69, 0.12), 0 0 25px rgba(249, 115, 22, 0.08);
+  transform: translateY(-4px);
+}
+
+/* Corporate Pill / Badge */
+.corporate-pill {
+  background: #F1F5F9;
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  color: #0F172A;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* Vibrant Safety Orange Button */
+.corporate-btn-orange {
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 50%, #C2410C 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 
+    0 10px 25px -5px rgba(249, 115, 22, 0.4),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.corporate-btn-orange:hover {
+  background: linear-gradient(135deg, #FB923C 0%, #F97316 50%, #EA580C 100%);
+  box-shadow: 
+    0 14px 30px -5px rgba(249, 115, 22, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  transform: translateY(-2px);
+}
+
+/* Liquid Glass Surface Card (for dark/cinematic sections) */
 .liquid-glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(15, 30, 55, 0.4);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(11, 37, 69, 0.55);
   backdrop-filter: blur(24px) saturate(190%);
   -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 
     0 20px 40px -15px rgba(0, 0, 0, 0.45),
     0 1px 1px 0 rgba(255, 255, 255, 0.25) inset;
@@ -62,31 +137,31 @@
 }
 
 .liquid-glass-card:hover {
-  border-color: rgba(0, 180, 216, 0.35);
+  border-color: rgba(249, 115, 22, 0.45);
   box-shadow: 
     0 25px 50px -10px rgba(0, 0, 0, 0.65),
     0 1px 1px 0 rgba(255, 255, 255, 0.3) inset,
-    0 0 30px rgba(0, 180, 216, 0.15);
+    0 0 30px rgba(249, 115, 22, 0.15);
   transform: translateY(-4px);
 }
 
 /* Liquid Glass Pill / Badge */
 .liquid-glass-pill {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Liquid Glass Gold Button */
 .liquid-glass-btn-gold {
-  background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%);
-  color: #030810;
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 50%, #C2410C 100%);
+  color: #FFFFFF;
   font-weight: 700;
   border: 1px solid rgba(255, 255, 255, 0.35);
   box-shadow: 
-    0 10px 25px -5px rgba(245, 158, 11, 0.45),
+    0 10px 25px -5px rgba(249, 115, 22, 0.45),
     0 1px 0 rgba(255, 255, 255, 0.6) inset;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
@@ -110,39 +185,39 @@
 
 .liquid-glass-btn-gold:hover {
   box-shadow: 
-    0 14px 30px -5px rgba(245, 158, 11, 0.6),
+    0 14px 30px -5px rgba(249, 115, 22, 0.6),
     0 1px 0 rgba(255, 255, 255, 0.8) inset;
   transform: translateY(-2px) scale(1.02);
 }
 
 /* Liquid Glass Cyan/Ocean Button */
 .liquid-glass-btn-ocean {
-  background: linear-gradient(135deg, rgba(0, 180, 216, 0.2) 0%, rgba(0, 119, 182, 0.35) 100%);
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.25) 0%, rgba(11, 37, 69, 0.5) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   color: #FFFFFF;
-  border: 1px solid rgba(0, 180, 216, 0.4);
+  border: 1px solid rgba(2, 132, 199, 0.4);
   box-shadow: 
-    0 10px 25px -5px rgba(0, 119, 182, 0.35),
+    0 10px 25px -5px rgba(2, 132, 199, 0.3),
     0 1px 0 rgba(255, 255, 255, 0.2) inset;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .liquid-glass-btn-ocean:hover {
-  background: linear-gradient(135deg, rgba(0, 180, 216, 0.35) 0%, rgba(0, 119, 182, 0.5) 100%);
-  border-color: rgba(0, 180, 216, 0.8);
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.45) 0%, rgba(11, 37, 69, 0.7) 100%);
+  border-color: rgba(2, 132, 199, 0.8);
   box-shadow: 
-    0 14px 35px -5px rgba(0, 180, 216, 0.45),
+    0 14px 35px -5px rgba(2, 132, 199, 0.45),
     0 1px 0 rgba(255, 255, 255, 0.4) inset;
   transform: translateY(-2px);
 }
 
 /* Liquid Glass Input Fields */
 .liquid-glass-input {
-  background: rgba(10, 25, 47, 0.5);
+  background: rgba(11, 37, 69, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #FFFFFF;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) inset;
   transition: all 0.25s ease;
@@ -150,11 +225,11 @@
 
 .liquid-glass-input:focus {
   outline: none;
-  border-color: #00B4D8;
+  border-color: #F97316;
   box-shadow: 
-    0 0 15px rgba(0, 180, 216, 0.3),
+    0 0 15px rgba(249, 115, 22, 0.35),
     0 2px 6px rgba(0, 0, 0, 0.3) inset;
-  background: rgba(10, 25, 47, 0.7);
+  background: rgba(11, 37, 69, 0.85);
 }
 
 /* Gradients */

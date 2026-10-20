@@ -38,13 +38,12 @@ export const HangingContainerSection: React.FC = () => {
     <section 
       ref={containerRef}
       id="container-reveal"
-      className="relative w-full z-15 bg-[#050D1A]"
-      style={{ height: '115vh', backgroundColor: '#050D1A' }}
+      className="relative w-full z-15 bg-gradient-to-b from-[#07172C] via-[#0D3156] via-[#1A4F82] via-[#488ECB] to-[#A7D3F7]"
+      style={{ height: '100vh' }}
     >
-      {/* Sticky Fullscreen Viewport - Clean Solid Dark Navy Background (Pure #050D1A, Zero Glow) */}
+      {/* Viewport Container - Smooth Maritime Sky Gradient Transition */}
       <div 
-        className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center bg-[#050D1A]"
-        style={{ backgroundColor: '#050D1A' }}
+        className="relative h-screen w-full overflow-hidden flex flex-col items-center justify-center bg-gradient-to-b from-[#07172C] via-[#0D3156] via-[#1A4F82] via-[#488ECB] to-[#A7D3F7]"
       >
         {/* Subtle grid pattern background matching site */}
         <div 
@@ -55,6 +54,9 @@ export const HangingContainerSection: React.FC = () => {
           }}
         />
 
+        {/* Seamless bottom fade mask into Company Overview (#A7D3F7) */}
+        <div className="absolute bottom-0 left-0 right-0 h-44 sm:h-56 bg-gradient-to-b from-transparent via-[#A7D3F7]/60 to-[#A7D3F7] pointer-events-none z-20" />
+
         {/* Hanging 3D Container Asset - Widened by 50px on each side (100px total) per user instruction */}
         <div 
           className="relative z-10 w-full flex flex-col items-center justify-center will-change-transform select-none transition-transform duration-100 ease-out px-3 sm:px-6 md:px-10 lg:px-[50px]"
@@ -62,8 +64,8 @@ export const HangingContainerSection: React.FC = () => {
             transform: `translate3d(0, ${translateY}%, 0)`
           }}
         >
-          {/* Main 3D Container Image: Responsive margins (12px mobile, 24px tablet, 50px desktop) */}
-          <div className="relative w-full flex justify-center items-center filter drop-shadow-[0_30px_70px_rgba(0,0,0,0.9)]">
+          {/* Main 3D Container Image: Soft, atmospheric maritime shadow */}
+          <div className="relative w-full flex justify-center items-center filter drop-shadow-[0_20px_35px_rgba(11,37,69,0.3)] drop-shadow-[0_10px_20px_rgba(0,0,0,0.18)]">
             <img 
               src="/3D_Orange_Container_Cropped.png" 
               alt="Won Shipping Agencies - Connecting Ports, Moving Dreams" 

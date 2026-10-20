@@ -39,7 +39,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050D1A] text-slate-100 relative selection:bg-cyan-500/30 selection:text-white">
+    <div className="min-h-screen bg-[#A7D3F7] text-slate-800 relative selection:bg-orange-500/25 selection:text-orange-900">
       {/* 1. Floating Apple/Mac Dock Liquid Glass Navbar */}
       <Navbar 
         visible={navbarVisible && !isCinematicActive}
