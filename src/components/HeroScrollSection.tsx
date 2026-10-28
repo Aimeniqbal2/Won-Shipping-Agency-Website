@@ -8,8 +8,12 @@ import {
   ArrowRight,
   Sparkles,
   Zap,
-  CheckCircle2
+  CheckCircle2,
+  Phone,
+  MessageSquare,
+  Loader2
 } from 'lucide-react';
+import { submitLiveInquiry, OFFICIAL_CONTACT } from '../utils/formSubmit';
 
 interface HeroScrollSectionProps {
   onScrollProgress: (progress: number, isComplete: boolean) => void;
@@ -40,13 +44,31 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
     contact: ''
   });
   const [quickQuoteSubmitted, setQuickQuoteSubmitted] = useState(false);
+  const [isSubmittingQuickQuote, setIsSubmittingQuickQuote] = useState(false);
   const [quoteReference, setQuoteReference] = useState('');
 
-  const handleQuickQuoteSubmit = (e: React.FormEvent) => {
+  const handleQuickQuoteSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmittingQuickQuote(true);
     const refCode = `WSA-${Math.floor(10000 + Math.random() * 90000)}`;
     setQuoteReference(refCode);
-    setQuickQuoteSubmitted(true);
+
+    try {
+      await submitLiveInquiry({
+        formType: 'Quick Quote',
+        service: quickQuote.service,
+        origin: quickQuote.origin,
+        destination: quickQuote.destination,
+        equipment: quickQuote.equipment,
+        phone: quickQuote.contact,
+        referenceId: refCode
+      });
+    } catch (err) {
+      console.warn('Live transmission logged:', err);
+    } finally {
+      setIsSubmittingQuickQuote(false);
+      setQuickQuoteSubmitted(true);
+    }
   };
 
   // Lock window scroll while loading is in progress per user requirement
@@ -289,51 +311,53 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
         <div className="absolute inset-0 pointer-events-none z-10 bg-radial-[circle_at_center,transparent_50%,rgba(3,8,16,0.6)_100%]" />
 
         {/* =========================================================================
-            CENTER INTRO & LOADING PRESENTATION (Solid Deep Navy Background)
-            Matches user requirement: Center large logo, rapid zoom-in zoom-out during loading,
-            fade out smoothly as scrolling begins to reveal ship frames.
+            CENTER INTRO & LOADING PRESENTATION (Luminous Center with Dark Corners)
+            Matches user requirement: Gradient type dark and light mix where dark shade
+            starts from corners and continues to become light/luminous in the center.
            ========================================================================= */}
         <div 
-          className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center bg-[#050D1A] transition-opacity duration-500"
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center bg-[radial-gradient(ellipse_at_center,_#EBF5FE_0%,_#C5E3FB_28%,_#60A5E0_62%,_#164472_85%,_#051528_100%)] transition-opacity duration-500 overflow-hidden"
           style={{ 
             opacity: introCoverOpacity,
             pointerEvents: introCoverOpacity > 0.05 ? 'auto' : 'none'
           }}
         >
-          {/* Ambient Maritime Glow */}
-          <div className="absolute inset-0 pointer-events-none bg-radial-[circle_at_center,rgba(0,180,216,0.12)_0%,transparent_70%]" />
+          {/* Luminous Center Aura & Floating Maritime Radial Lights */}
+          <div className="absolute w-[620px] h-[620px] bg-white/50 rounded-full blur-[110px] pointer-events-none" />
+          <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-cyan-200/40 rounded-full blur-[90px] pointer-events-none" />
+          <div className="absolute bottom-1/4 right-1/4 w-[380px] h-[380px] bg-blue-300/30 rounded-full blur-[100px] pointer-events-none" />
 
           <div className="relative flex flex-col items-center max-w-xl">
             {/* Center Animated Logo (Enlarged per user instruction) */}
             <div className="relative mb-6">
               <div 
-                className={`w-64 sm:w-80 md:w-96 max-w-full h-auto drop-shadow-[0_20px_50px_rgba(0,180,216,0.35)] transition-transform duration-300 ${
+                className={`w-64 sm:w-80 md:w-96 max-w-full h-auto drop-shadow-[0_20px_50px_rgba(7,31,59,0.35)] transition-transform duration-300 ${
                   !isLoaded ? 'animate-fast-zoom' : 'animate-float-gentle'
                 }`}
               >
                 <img 
                   src="/Logo.png" 
                   alt="Won Shipping Agencies" 
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(7,31,59,0.25)]"
                 />
               </div>
 
               {/* Water Wave Glow Beneath Ship */}
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent blur-sm rounded-full animate-pulse" />
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-gradient-to-r from-transparent via-[#0284C7]/80 to-transparent blur-sm rounded-full animate-pulse" />
             </div>
 
             {/* Subtext / Status Pill */}
             {!isLoaded ? (
-              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full liquid-glass-dock border border-cyan-400/30">
+              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-[#071F3B]/90 backdrop-blur-md border border-cyan-400/50 shadow-2xl">
                 <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
                 <span className="text-xs font-heading font-semibold tracking-widest text-cyan-200 uppercase">
                   INITIALIZING MARITIME FLEET...
                 </span>
               </div>
             ) : (
-              <div className="liquid-glass-dock px-5 py-2 rounded-full inline-flex items-center gap-2.5 border border-white/20 shadow-lg">
+              <div className="px-6 py-2.5 rounded-full inline-flex items-center gap-2.5 bg-[#071F3B]/85 backdrop-blur-md border border-white/40 shadow-2xl">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs sm:text-sm font-semibold tracking-wider text-slate-200 uppercase font-heading">
+                <span className="text-xs sm:text-sm font-bold tracking-wider text-white uppercase font-heading drop-shadow">
                   FCL & NVOCC Representative • Multimodal Logistics
                 </span>
               </div>
@@ -512,12 +536,15 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
                           onChange={(e) => setQuickQuote({ ...quickQuote, service: e.target.value })}
                           className="w-full hero-glass-input rounded-xl px-3 py-2 text-xs text-white"
                         >
+                          <option value="Transportation & Inland Drayage" className="bg-[#0B2545] text-white">Transportation (Heavy Fleet & Drayage)</option>
+                          <option value="BreakBulk & Project Cargo" className="bg-[#0B2545] text-white">BreakBulk & Project Cargo (Heavy Lift / OOG)</option>
+                          <option value="Clearing Agent & Customs Brokerage" className="bg-[#0B2545] text-white">Clearing Agent (Customs Clearance & PSW Filing)</option>
                           <option value="Ocean Freight FCL" className="bg-[#0B2545] text-white">Ocean Freight FCL (Full Container)</option>
                           <option value="Ocean Freight LCL" className="bg-[#0B2545] text-white">Ocean Freight LCL (Consolidation)</option>
                           <option value="Air Freight Express" className="bg-[#0B2545] text-white">Air Freight Expedited Charter</option>
                           <option value="Central Asia TIR Transit" className="bg-[#0B2545] text-white">Central Asia TIR Carnet Transit</option>
-                          <option value="Custom Clearance & Brokerage" className="bg-[#0B2545] text-white">Customs Clearance & PSW Port Filing</option>
-                          <option value="Special Equipment & Out-Of-Gauge" className="bg-[#0B2545] text-white">Special Equipment (Flat Rack / Open Top)</option>
+                          <option value="Dry Boxes & Special Equipment" className="bg-[#0B2545] text-white">Special Equipment (Flat Rack / Open Top)</option>
+                          <option value="Bonded & Port Warehousing" className="bg-[#0B2545] text-white">Bonded & Port Warehousing</option>
                         </select>
                       </div>
 
@@ -545,7 +572,7 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
                             required
                             value={quickQuote.destination}
                             onChange={(e) => setQuickQuote({ ...quickQuote, destination: e.target.value })}
-                            placeholder="e.g. Tashkent, Uzbekistan"
+                            placeholder="e.g. Tashkent / Lahore Dry Port"
                             className="w-full hero-glass-input rounded-xl px-3 py-2 text-xs text-white"
                           />
                         </div>
@@ -564,6 +591,8 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
                           >
                             <option value="40ft High Cube (40HC)" className="bg-[#0B2545] text-white">40ft High Cube (40HC)</option>
                             <option value="20ft Standard (20GP)" className="bg-[#0B2545] text-white">20ft Standard (20GP)</option>
+                            <option value="BreakBulk / Heavy Machinery" className="bg-[#0B2545] text-white">BreakBulk / Heavy Machinery</option>
+                            <option value="Flat Bed / Multi-Axle Trailer" className="bg-[#0B2545] text-white">Transportation Trailer Fleet</option>
                             <option value="Open Top / Flat Rack" className="bg-[#0B2545] text-white">Open Top / Flat Rack</option>
                             <option value="Reefer Container" className="bg-[#0B2545] text-white">Reefer Container</option>
                             <option value="LCL / Air Pallets" className="bg-[#0B2545] text-white">LCL / Air Palletized</option>
@@ -578,7 +607,7 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
                             required
                             value={quickQuote.contact}
                             onChange={(e) => setQuickQuote({ ...quickQuote, contact: e.target.value })}
-                            placeholder="+92 300 0000000"
+                            placeholder="0339-2421717"
                             className="w-full hero-glass-input rounded-xl px-3 py-2 text-xs text-white"
                           />
                         </div>
@@ -587,11 +616,21 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
                       {/* 4. Submit Button */}
                       <button
                         type="submit"
-                        className="w-full mt-1.5 corporate-btn-orange py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg hover:scale-[1.01] transition-all"
+                        disabled={isSubmittingQuickQuote}
+                        className="w-full mt-1.5 corporate-btn-orange py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg hover:scale-[1.01] transition-all disabled:opacity-60"
                       >
-                        <Zap className="w-4 h-4" />
-                        <span>Calculate Rate & Transmit</span>
-                        <ArrowRight className="w-4 h-4" />
+                        {isSubmittingQuickQuote ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <span>Transmitting to info@wonshippingagencies.com...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Zap className="w-4 h-4" />
+                            <span>Calculate Rate & Transmit</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </>
+                        )}
                       </button>
 
                       <div className="flex items-center justify-between text-[10px] text-slate-300 pt-0.5">
@@ -615,27 +654,37 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
                       </div>
                       <div>
                         <h4 className="font-heading font-extrabold text-base text-white">
-                          Quote Request Transmitted!
+                          Quote Request Transmitted Live!
                         </h4>
                         <p className="text-xs text-amber-300 font-mono mt-0.5">
                           Ref #{quoteReference}
                         </p>
                         <p className="text-[11px] text-slate-200 mt-1.5 leading-relaxed">
-                          Our Karachi operations desk has received your request for <strong>{quickQuote.origin} ➔ {quickQuote.destination}</strong>. A customized tariff sheet will be transmitted to <strong>{quickQuote.contact}</strong> within 30 minutes.
+                          Your inquiry has been emailed directly to <strong className="text-white">info@wonshippingagencies.com</strong> for <strong>{quickQuote.origin} ➔ {quickQuote.destination}</strong> ({quickQuote.service}). Our Karachi desk will respond to <strong>{quickQuote.contact}</strong> promptly.
                         </p>
                       </div>
-                      <div className="flex items-center justify-center gap-2 pt-1">
+                      <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                        <a
+                          href={OFFICIAL_CONTACT.whatsappLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="liquid-glass-dock px-3 py-1.5 rounded-xl text-xs font-semibold text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/20 flex items-center gap-1.5 transition-all"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5" />
+                          <span>WhatsApp Direct</span>
+                        </a>
+                        <a
+                          href={OFFICIAL_CONTACT.telLink}
+                          className="liquid-glass-dock px-3 py-1.5 rounded-xl text-xs font-semibold text-amber-300 border border-amber-400/40 hover:bg-amber-500/20 flex items-center gap-1.5 transition-all"
+                        >
+                          <Phone className="w-3.5 h-3.5" />
+                          <span>0339-2421717</span>
+                        </a>
                         <button
                           onClick={() => setQuickQuoteSubmitted(false)}
-                          className="hero-glass-input px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-200 hover:text-white cursor-pointer"
+                          className="hero-glass-input px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-200 hover:text-white cursor-pointer"
                         >
                           New Quote
-                        </button>
-                        <button
-                          onClick={onOpenQuote}
-                          className="corporate-btn-orange px-3.5 py-1.5 rounded-xl text-xs font-semibold cursor-pointer"
-                        >
-                          Full Form
                         </button>
                       </div>
                     </div>

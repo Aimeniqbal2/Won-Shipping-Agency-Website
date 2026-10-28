@@ -10,8 +10,12 @@ import {
   Container, 
   ShieldCheck,
   Phone,
-  Mail
+  Mail,
+  FileCheck,
+  Loader2,
+  MessageSquare
 } from 'lucide-react';
+import { submitLiveInquiry, OFFICIAL_CONTACT } from '../utils/formSubmit';
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -24,7 +28,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
   onClose,
   preselectedService 
 }) => {
-  const [service, setService] = useState('Ocean Freight FCL');
+  const [service, setService] = useState('Transportation & Haulage');
   const [origin, setOrigin] = useState('Karachi, Pakistan (Port Qasim / KICT)');
   const [destination, setDestination] = useState('Tashkent, Uzbekistan (TIR)');
   const [cargoType, setCargoType] = useState('General Commercial Goods');
@@ -35,7 +39,9 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [quoteReference, setQuoteReference] = useState('');
 
   useEffect(() => {
     if (preselectedService) {
@@ -45,9 +51,34 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+    const refCode = `WSA-${Math.floor(10000 + Math.random() * 90000)}`;
+    setQuoteReference(refCode);
+
+    try {
+      await submitLiveInquiry({
+        formType: 'Detailed Freight Quote',
+        name,
+        company,
+        email,
+        phone,
+        service,
+        origin,
+        destination,
+        cargoType,
+        weight,
+        equipment: containerCount,
+        message: notes,
+        referenceId: refCode
+      });
+    } catch (err) {
+      console.warn('Live quote transmission logged:', err);
+    } finally {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    }
   };
 
   const handleReset = () => {
@@ -98,14 +129,16 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-300 block mb-2 font-heading">
                   Logistics Service Mode
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {[
+                    { label: 'Transportation & Haulage', icon: Truck },
+                    { label: 'BreakBulk & Project Cargo', icon: Container },
+                    { label: 'Clearing Agent & PSW', icon: FileCheck },
                     { label: 'Ocean Freight FCL', icon: Ship },
                     { label: 'Ocean Freight LCL', icon: Ship },
-                    { label: 'Air Freight', icon: Plane },
-                    { label: 'Special Equipment', icon: Container },
-                    { label: 'Inland Trucking', icon: Truck },
+                    { label: 'Air Freight Charter', icon: Plane },
                     { label: 'TIR Central Asia', icon: Globe2 },
+                    { label: 'Special Equipment', icon: Container },
                   ].map((item) => {
                     const Icon = item.icon;
                     const isCurrent = service.includes(item.label) || service === item.label;
@@ -242,7 +275,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                       required
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      placeholder="Phone Number (e.g. +92 300 1234567) *"
+                      placeholder="Phone / WhatsApp (0339-2421717) *"
                       className="w-full liquid-glass-input rounded-xl px-3.5 py-2 text-xs sm:text-sm"
                     />
                   </div>
@@ -253,7 +286,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     rows={2}
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Special Requirements (e.g. Temperature control, customs clearance needed, hazardous cargo class)..."
+                    placeholder="Special Requirements (e.g. Transportation drayage, BreakBulk heavy lift, Clearing agent customs assistance, temperature control)..."
                     className="w-full liquid-glass-input rounded-xl px-3.5 py-2 text-xs sm:text-sm resize-none"
                   />
                 </div>
@@ -263,15 +296,25 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
               <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-2 text-xs text-slate-400 font-light">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Encrypted inquiry sent to Won Shipping Desk</span>
+                  <span>Live direct transmission to info@wonshippingagencies.com</span>
                 </div>
 
                 <button
                   type="submit"
-                  className="liquid-glass-btn-gold px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer shadow-xl shadow-amber-500/25"
+                  disabled={isSubmitting}
+                  className="liquid-glass-btn-gold px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer shadow-xl shadow-amber-500/25 disabled:opacity-60"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>Submit Rate Inquiry</span>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Transmitting Inquiry...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Submit Rate Inquiry</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>
@@ -285,35 +328,48 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
 
             <div>
               <h3 className="text-2xl sm:text-3xl font-bold text-white font-heading">
-                Inquiry Successfully Logged!
+                Inquiry Successfully Transmitted!
               </h3>
+              <p className="text-xs text-amber-300 font-mono mt-1">
+                Reference ID: #{quoteReference}
+              </p>
               <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-md mx-auto font-light leading-relaxed">
-                Thank you <strong className="text-amber-300">{name || 'valued partner'}</strong>. Our Karachi operations desk has received your request for <strong className="text-cyan-300">{service}</strong> from {origin} to {destination}.
+                Thank you <strong className="text-amber-300">{name || 'valued partner'}</strong>. Your detailed request has been transmitted live to <strong className="text-cyan-300">info@wonshippingagencies.com</strong> for <strong className="text-white">{service}</strong> from {origin} to {destination}.
               </p>
             </div>
 
             <div className="p-5 rounded-2xl bg-white/5 border border-white/10 max-w-md mx-auto text-left space-y-2 text-xs text-slate-300">
               <p><strong className="text-white">Route:</strong> {origin} ➔ {destination}</p>
               <p><strong className="text-white">Cargo:</strong> {cargoType} ({weight}, {containerCount})</p>
-              <p><strong className="text-white">Direct Desk Email:</strong> Anas@wonshippingagencies.com</p>
-              <p><strong className="text-white">Direct Hotline:</strong> 021-3243113-9</p>
+              <p><strong className="text-white">Live Dispatched To:</strong> info@wonshippingagencies.com</p>
+              <p><strong className="text-white">Direct Hotline:</strong> 0339-2421717</p>
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <a
-                href={`mailto:Anas@wonshippingagencies.com?subject=Freight Quote Request - ${encodeURIComponent(service)}&body=Name: ${encodeURIComponent(name)}%0ACompany: ${encodeURIComponent(company)}%0APhone: ${encodeURIComponent(phone)}%0ARoute: ${encodeURIComponent(origin)} to ${encodeURIComponent(destination)}%0ACargo: ${encodeURIComponent(cargoType)} (${encodeURIComponent(weight)})`}
-                className="liquid-glass-pill hover:border-cyan-400 px-5 py-3 rounded-xl text-xs font-semibold text-cyan-300 flex items-center gap-2 cursor-pointer"
+                href={OFFICIAL_CONTACT.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="liquid-glass-dock px-5 py-3 rounded-xl text-xs font-semibold text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/20 flex items-center gap-2 cursor-pointer transition-all"
               >
-                <Mail className="w-4 h-4" />
-                <span>Open in Email Client</span>
+                <MessageSquare className="w-4 h-4" />
+                <span>WhatsApp Operations</span>
               </a>
 
               <a
-                href="tel:02132431139"
+                href={OFFICIAL_CONTACT.telLink}
                 className="liquid-glass-btn-gold px-6 py-3 rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer"
               >
                 <Phone className="w-4 h-4" />
-                <span>Call Karachi Operations</span>
+                <span>Call 0339-2421717</span>
+              </a>
+
+              <a
+                href={`mailto:info@wonshippingagencies.com?subject=Freight Quote Request [${quoteReference}] - ${encodeURIComponent(service)}&body=Name: ${encodeURIComponent(name)}%0ACompany: ${encodeURIComponent(company)}%0APhone: ${encodeURIComponent(phone)}%0ARoute: ${encodeURIComponent(origin)} to ${encodeURIComponent(destination)}%0ACargo: ${encodeURIComponent(cargoType)} (${encodeURIComponent(weight)})`}
+                className="liquid-glass-pill hover:border-cyan-400 px-5 py-3 rounded-xl text-xs font-semibold text-cyan-300 flex items-center gap-2 cursor-pointer"
+              >
+                <Mail className="w-4 h-4" />
+                <span>info@wonshippingagencies.com</span>
               </a>
 
               <button

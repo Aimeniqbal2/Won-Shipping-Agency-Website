@@ -96,13 +96,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote }) => {
               Capabilities
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-600 font-medium">
-              <li>Air & Ocean Freight</li>
-              <li>Agency Representation</li>
-              <li>Special Equipment</li>
-              <li>Custom Clearance</li>
-              <li>Fleet Transportation</li>
-              <li>Door-to-Door Multimodal</li>
-              <li>Port Warehousing</li>
+              <li>Transportation & Heavy Drayage</li>
+              <li>BreakBulk & Project Cargo</li>
+              <li>Clearing Agent & PSW Brokerage</li>
+              <li>Air & Ocean Freight (FCL/LCL)</li>
+              <li>Line Agency Representation</li>
+              <li>Special Equipment (OOG)</li>
+              <li>Central Asia TIR Corridor</li>
+              <li>Bonded Port Warehousing</li>
             </ul>
           </div>
 
@@ -120,20 +121,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote }) => {
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#EA580C] shrink-0" />
-                <a href="tel:02132431139" className="hover:text-[#EA580C] transition-colors font-mono font-medium">
-                  021-3243113-9
+                <a href="tel:+923392421717" className="hover:text-[#EA580C] transition-colors font-mono font-medium">
+                  0339-2421717
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#EA580C] shrink-0" />
-                <a href="mailto:Anas@wonshippingagencies.com" className="hover:text-[#EA580C] transition-colors break-all font-medium">
-                  Anas@wonshippingagencies.com
+                <a href="mailto:info@wonshippingagencies.com" className="hover:text-[#EA580C] transition-colors break-all font-medium">
+                  info@wonshippingagencies.com
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Globe className="w-4 h-4 text-[#0284C7] shrink-0" />
-                <a href="http://www.wonshippingline.com" target="_blank" rel="noreferrer" className="hover:text-[#0284C7] transition-colors font-medium">
-                  www.wonshippingline.com
+                <a href="https://www.wonshippingagencies.com" target="_blank" rel="noreferrer" className="hover:text-[#0284C7] transition-colors font-medium">
+                  www.wonshippingagencies.com
                 </a>
               </div>
             </div>

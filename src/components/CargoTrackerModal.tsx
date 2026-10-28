@@ -186,7 +186,7 @@ export const CargoTrackerModal: React.FC<CargoTrackerModalProps> = ({ isOpen, on
                 <span>Verified by Pakistan Port Authority & Won Shipping Agencies</span>
               </div>
               <a 
-                href="mailto:Anas@wonshippingagencies.com?subject=Tracking Inquiry for WSA-98214-PK"
+                href="mailto:info@wonshippingagencies.com?subject=Tracking Inquiry for WSA-98214-PK"
                 className="liquid-glass-pill hover:border-amber-400 px-4 py-2 rounded-xl text-xs font-semibold text-amber-300 flex items-center gap-2 transition-all cursor-pointer"
               >
                 <span>Need Detailed Cargo Manifest?</span>

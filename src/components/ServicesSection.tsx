@@ -20,7 +20,7 @@ interface ServicesSectionProps {
 
 interface ServiceItem {
   id: string;
-  category: 'ocean_air' | 'agency_customs' | 'specialized_fleet' | 'inland_warehousing';
+  category: 'ocean_air' | 'clearing_agent' | 'transportation' | 'breakbulk' | 'tir_warehousing';
   title: string;
   tagline: string;
   image: string;
@@ -32,121 +32,121 @@ interface ServiceItem {
 }
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectService }) => {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'ocean_air' | 'agency_customs' | 'specialized_fleet' | 'inland_warehousing'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'ocean_air' | 'clearing_agent' | 'transportation' | 'breakbulk' | 'tir_warehousing'>('all');
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
 
   const services: ServiceItem[] = [
     {
+      id: 'transportation',
+      category: 'transportation',
+      title: 'Transportation & Heavy Fleet Haulage',
+      tagline: 'Nationwide Drayage with 24/7 Satellite GPS Tracking',
+      image: '/images/transportation.jpg',
+      icon: Truck,
+      badge: 'Transportation & Haulage',
+      description: 'Our dedicated Transportation division provides comprehensive overland logistics across Pakistan. Powered by a modern, heavy-duty fleet of prime movers, multi-axle trailers, low-bed carriers, and container chassis, we guarantee safe, punctual drayage from Karachi port terminals to all upcountry industrial destinations with continuous GPS satellite telematics.',
+      highlights: [
+        'Fleet of prime movers, 40ft/20ft container chassis & multi-axle trailers',
+        'Direct long-haul transit from Karachi ports to all upcountry dry ports',
+        '24/7 active satellite GPS telematics with live route optimization',
+        'Strict safety protocols, cargo lashing certifications & convoy escorts'
+      ],
+      specs: ['Fleet: Prime Movers & Multi-Axle Trailers', 'Coverage: Nationwide Pakistan Haulage', 'Tracking: 24/7 Live Satellite GPS']
+    },
+    {
+      id: 'breakbulk-cargo',
+      category: 'breakbulk',
+      title: 'BreakBulk & Heavy Lift Project Cargo',
+      tagline: 'Vessel Chartering, Port Stevedoring & Out-Of-Gauge Logistics',
+      image: '/images/special_equipment.jpg',
+      icon: Container,
+      badge: 'BreakBulk & Heavy Lift',
+      description: 'Won Shipping Agencies delivers elite BreakBulk cargo handling, heavy-lift parcel chartering, and out-of-gauge (OOG) marine logistics across Karachi Port (KPT) and Port Qasim (PQA). From heavy industrial turbines and steel coils to oversized manufacturing modules, our marine engineers manage vessel berthing, certified crane lifts, and hook-to-trailer discharge with zero demurrage.',
+      highlights: [
+        'Breakbulk vessel chartering, parcel space booking & berth coordination',
+        'Certified heavy lift crane operations & professional stevedoring teams',
+        'Out-of-gauge (OOG) flat rack, open top & platform container securing',
+        'Marine surveyor lashing certifications & direct quay-to-trailer transfer'
+      ],
+      specs: ['Cargo: BreakBulk, Heavy Machinery, OOG', 'Ports: KPT & Port Qasim Dedicated Berths', 'Capacity: Multi-Ton Heavy Lift & Project Cargo']
+    },
+    {
+      id: 'custom-clearance',
+      category: 'clearing_agent',
+      title: 'Clearing Agent & Customs Compliance',
+      tagline: 'Authorized Customs Clearing Agent with Accelerated PSW Green Channel',
+      image: '/images/custom_clearance.jpg',
+      icon: FileCheck,
+      badge: 'Licensed Clearing Agent',
+      description: 'As an officially licensed Clearing Agent in Pakistan, Won Shipping Agencies navigates customs regulations with unmatched precision. Operating across all major seaports, airports, and inland container depots, we handle swift Goods Declaration (GD) processing, Pakistan Single Window (PSW) filings, HS code duty optimization, and rapid green-channel releases to prevent costly demurrage.',
+      highlights: [
+        'Licensed customs clearing agent at KPT, Port Qasim & Air Freight units',
+        'Automated digital filing and fast-track processing via Pakistan Single Window (PSW)',
+        'HS tariff classification, valuation advisory & SRO duty exemption consulting',
+        'Swift delivery orders (DO), physical examinations & 24/7 port desk'
+      ],
+      specs: ['License: Authorized Customs Clearing Agent', 'Platform: Pakistan Single Window (PSW)', 'Turnaround: Rapid 24–48 Hour Clearance']
+    },
+    {
       id: 'freight-forwarding',
       category: 'ocean_air',
       title: 'Global Freight Forwarding',
-      tagline: 'Dual Expertise in Air & Ocean Cargo',
+      tagline: 'Dual Expertise in Air & Ocean Cargo Across 120+ Ports',
       image: '/images/freight_forwarding.jpg',
       icon: Plane,
       badge: 'Air & Sea Multimodal',
-      description: 'Won Shipping Agencies specializes in offering a comprehensive suite of logistics services, including both air and ocean freight. This dual expertise allows us to provide you with versatile options that best suit your unique shipping needs. We take pride in being the bridge that connects your products to markets around the world, all while offering you a tailored, cost-effective, and efficient shipping solution.',
+      description: 'Won Shipping Agencies specializes in offering a comprehensive suite of logistics services, including both air and ocean freight. This dual expertise allows us to provide you with versatile options that best suit your unique shipping needs. We take pride in being the bridge that connects your products to markets around the world with tailored, cost-effective routing.',
       highlights: [
-        'Global FCL & LCL Consolidation across 120+ ports',
-        'Expedited Air Freight charters & scheduled cargo flights',
-        'Tailored routing minimizing layovers & transit times',
-        'Complete end-to-end B/L documentation & cargo insurance'
+        'Global FCL & LCL Consolidation across 120+ ports worldwide',
+        'Expedited Air Freight charters & scheduled cargo flight space',
+        'Tailored routing minimizing layovers, transshipments & transit times',
+        'Complete end-to-end B/L documentation, clearance & cargo insurance'
       ],
-      specs: ['Mode: Air & Sea', 'Coverage: Global', 'Capacity: LCL to Full Vessel Charter']
+      specs: ['Mode: Air & Sea', 'Coverage: Global (120+ Ports)', 'Capacity: LCL to Full Vessel Charter']
     },
     {
       id: 'agency-representation',
-      category: 'agency_customs',
+      category: 'clearing_agent',
       title: 'Agency Representation',
       tagline: 'Reliable Ally to Global Principals & Shipping Lines',
       image: '/images/agency_representation.jpg',
       icon: Anchor,
       badge: 'NVOCC & Line Agency',
-      description: 'Won Shipping Agencies proudly serves as a reliable ally to our principals. We understand that effective agency representation demands not only reliability but also a keen awareness of the evolving marketing dynamics within the shipping sector. As a reputable shipping agency, we provide expert representatives for shipping lines, offering comprehensive services to facilitate smooth and efficient operations.',
+      description: 'Won Shipping Agencies proudly serves as a reliable ally to our principals. We understand that effective agency representation demands not only reliability but also a keen awareness of the evolving marketing dynamics within the shipping sector. As a reputable shipping agency, we provide expert representatives for shipping lines, offering comprehensive services to facilitate smooth operations.',
       highlights: [
-        'Cargo booking, vessel coordination & berth allocation',
+        'Cargo booking, vessel coordination & berth allocation at KPT & PQA',
         'Liaison between shipowners, charterers & cargo interests',
-        'In-depth mastery of local Pakistani port regulations',
-        'Transparent marketing dynamics maximizing vessel intake'
+        'In-depth mastery of local Pakistani maritime laws & port regulations',
+        'Transparent marketing dynamics maximizing vessel intake and utilization'
       ],
-      specs: ['Focus: Shipping Lines & Owners', 'Ports: Karachi (KPT) & Port Qasim (PQA)', 'Service: 24/7 Husbandry']
-    },
-    {
-      id: 'special-equipment',
-      category: 'specialized_fleet',
-      title: 'Dry Boxes & Special Equipment',
-      tagline: 'Empowering Pakistan’s Heavy & Oversized Export Trade',
-      image: '/images/special_equipment.jpg',
-      icon: Container,
-      badge: 'Project & Out-Of-Gauge',
-      description: 'Our extensive array of dry boxes ensures the secure and weatherproof transportation of general cargo, providing protection against external elements throughout transit. We excel in the handling of special equipment, which plays a vital role in facilitating Pakistan\'s exports. These specialized units allow us to accommodate oversized cargo, contributing to the diverse range of shipping requirements we can meet.',
-      highlights: [
-        'High-cube dry boxes (20ft, 40ft, 45ft HC)',
-        'Flat racks, open tops & platform containers for breakbulk',
-        'Expert cargo lashing, securing & weight distribution engineering',
-        'Seamless integration into Pakistan’s industrial export lanes'
-      ],
-      specs: ['Inventory: Dry, Open Top, Flat Rack', 'Cargo: Heavy Lift & Machinery', 'Standard: ISO Certified']
-    },
-    {
-      id: 'custom-clearance',
-      category: 'agency_customs',
-      title: 'Custom Clearance & Compliance',
-      tagline: 'Zero Delays, Precise Tariff Classification & Duties',
-      image: '/images/custom_clearance.jpg',
-      icon: FileCheck,
-      badge: 'Licensed Customs Broker',
-      description: 'Our company excels in seamless custom clearance services, ensuring efficient and compliant import and export processes. With expertise in navigating complex regulations, we facilitate smooth transactions, minimize delays, and optimize logistics for businesses. Our experienced team provides personalized support, handling documentation, duties, and taxes with precision, allowing clients to focus on their core operations.',
-      highlights: [
-        'Licensed customs brokerage at all Pakistani seaports & airports',
-        'HS code classification, duty exemption & tax optimization',
-        'Expedited green-channel processing minimizing demurrage',
-        'Automated digital filing with Pakistan Single Window (PSW)'
-      ],
-      specs: ['System: Pakistan Single Window (PSW)', 'Clearance Time: 24–48 Hours', 'Compliance: 100% Audit-Proof']
-    },
-    {
-      id: 'transportation',
-      category: 'specialized_fleet',
-      title: 'Inland Transportation & Fleet',
-      tagline: 'Diverse Heavy Fleet with Real-Time Satellite Tracking',
-      image: '/images/transportation.jpg',
-      icon: Truck,
-      badge: 'Nationwide Drayage',
-      description: 'Our transportation services provide comprehensive logistics solutions, ensuring timely and efficient movement of goods. With a diverse fleet and extensive network, we offer tailored transportation options to meet specific business needs. From local deliveries to long-haul shipments, our experienced team manages every aspect, prioritizing cargo safety, security, and customer satisfaction.',
-      highlights: [
-        'Fleet of prime movers, multi-axle trailers & container chassis',
-        'Long-haul transit from Karachi ports to upcountry dry ports',
-        'GPS live tracking with real-time route optimization',
-        'Strict safety protocols and dedicated convoy escorts if needed'
-      ],
-      specs: ['Fleet: Prime Movers & Heavy Trailers', 'Coverage: Nationwide Pakistan', 'Tracking: 24/7 Satellite GPS']
+      specs: ['Focus: Shipping Lines & NVOCCs', 'Ports: Karachi (KPT) & Port Qasim (PQA)', 'Service: 24/7 Operations & Husbandry']
     },
     {
       id: 'door-to-door',
-      category: 'inland_warehousing',
+      category: 'tir_warehousing',
       title: 'Door-to-Door & Central Asia TIR',
       tagline: 'Pivotal Road Connector via TIR Carnets Across Borders',
       image: '/images/door_to_door.jpg',
       icon: Globe2,
       badge: 'TIR Carnet Corridor',
-      description: 'Won Shipping agencies exceptional network positions us to execute pick-up and delivery services from even the most remote and challenging locations across the globe. Our extensive logistics expertise extends beyond borders, enabling us to collect cargo from any location in Pakistan to your chosen port. We take pride in our role as a pivotal connector of Central Asian countries through the utilization of TIR Carnets.',
+      description: 'Won Shipping Agencies exceptional network positions us to execute pick-up and delivery services from even the most remote locations across the globe. Our extensive logistics expertise extends beyond borders, enabling us to collect cargo from any location in Pakistan to your chosen port. We take pride in our role as a pivotal connector of Central Asian countries through TIR Carnets.',
       highlights: [
         'Seamless pick-up from remote manufacturing centers across Pakistan',
         'Direct TIR Carnet overland corridors to Uzbekistan, Turkmenistan, Kazakhstan',
         'Sealed transit bypassing multi-border customs bottlenecks',
         'Single-carrier accountability from factory door to destination warehouse'
       ],
-      specs: ['Territory: Pakistan ➔ Central Asia', 'Protocol: TIR Carnet Convention', 'Service: Door-to-Door']
+      specs: ['Territory: Pakistan ➔ Central Asia', 'Protocol: TIR Carnet Convention', 'Service: Door-to-Door Multimodal']
     },
     {
       id: 'warehousing',
-      category: 'inland_warehousing',
+      category: 'tir_warehousing',
       title: 'Bonded & Non-Bonded Warehousing',
       tagline: 'Strategic Port-Adjacent Facilities & International Consolidation',
       image: '/images/warehousing.jpg',
       icon: Warehouse,
       badge: 'Port-Adjacent Storage',
-      description: 'At Won Shipping agencies, our diverse portfolio encompasses both bonded and non-bonded warehouses strategically located in close proximity to ports, ensuring seamless cargo transfer to vessels. We take great pride in offering a comprehensive array of services, including international consolidation, effectively serving multi-country operations.',
+      description: 'At Won Shipping Agencies, our diverse portfolio encompasses both bonded and non-bonded warehouses strategically located in close proximity to ports, ensuring seamless cargo transfer to vessels. We take great pride in offering a comprehensive array of services, including international consolidation, effectively serving multi-country operations.',
       highlights: [
         'Facilities adjacent to Karachi Port and Port Qasim terminals',
         'Bonded warehousing for duty-deferred international consolidation',
@@ -197,7 +197,37 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
           }`}
         >
-          All 7 Capabilities
+          All Capabilities
+        </button>
+        <button
+          onClick={() => setActiveFilter('transportation')}
+          className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+            activeFilter === 'transportation'
+              ? 'bg-[#0B2545] text-white shadow-md shadow-navy-900/20'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          Transportation & Fleet
+        </button>
+        <button
+          onClick={() => setActiveFilter('breakbulk')}
+          className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+            activeFilter === 'breakbulk'
+              ? 'bg-[#0B2545] text-white shadow-md shadow-navy-900/20'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          BreakBulk & Project Cargo
+        </button>
+        <button
+          onClick={() => setActiveFilter('clearing_agent')}
+          className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+            activeFilter === 'clearing_agent'
+              ? 'bg-[#0B2545] text-white shadow-md shadow-navy-900/20'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          Clearing Agent & Brokerage
         </button>
         <button
           onClick={() => setActiveFilter('ocean_air')}
@@ -210,34 +240,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
           Air & Ocean Freight
         </button>
         <button
-          onClick={() => setActiveFilter('agency_customs')}
+          onClick={() => setActiveFilter('tir_warehousing')}
           className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-            activeFilter === 'agency_customs'
+            activeFilter === 'tir_warehousing'
               ? 'bg-[#0B2545] text-white shadow-md shadow-navy-900/20'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
           }`}
         >
-          Agency & Custom Clearance
-        </button>
-        <button
-          onClick={() => setActiveFilter('specialized_fleet')}
-          className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-            activeFilter === 'specialized_fleet'
-              ? 'bg-[#0B2545] text-white shadow-md shadow-navy-900/20'
-              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
-        >
-          Special Equipment & Fleet
-        </button>
-        <button
-          onClick={() => setActiveFilter('inland_warehousing')}
-          className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-            activeFilter === 'inland_warehousing'
-              ? 'bg-[#0B2545] text-white shadow-md shadow-navy-900/20'
-              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
-        >
-          TIR Road & Warehousing
+          TIR Corridor & Warehousing
         </button>
       </div>
 

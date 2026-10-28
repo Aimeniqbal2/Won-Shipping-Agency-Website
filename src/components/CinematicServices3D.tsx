@@ -79,50 +79,50 @@ export const CinematicServices3D: React.FC<CinematicServices3DProps> = ({ onActi
       specs: ['Focus: Shipping Lines & Owners', 'Ports: Karachi & Port Qasim', 'Husbandry: 24/7 Operations']
     },
     {
-      id: 'special-equipment',
+      id: 'breakbulk-cargo',
       number: '03',
-      title: 'Dry Boxes & Special Equipment',
-      tagline: 'Empowering Pakistan’s Heavy & Oversized Export Trade',
+      title: 'BreakBulk & Heavy Lift Cargo',
+      tagline: 'Vessel Chartering, Port Stevedoring & Out-Of-Gauge Logistics',
       image: '/images/special_equipment.jpg',
       icon: Container,
-      badge: 'Project & Out-Of-Gauge',
-      description: 'Extensive inventory of high-cube dry boxes, flat racks, and open-top containers engineered to transport project cargo, machinery, and breakbulk safely.',
+      badge: 'BreakBulk & Project Cargo',
+      description: 'Expert BreakBulk cargo handling, heavy-lift parcel chartering, and out-of-gauge (OOG) vessel stowage across Karachi Port (KPT) and Port Qasim (PQA). Certified crane stevedoring with zero demurrage.',
       highlights: [
-        'High-cube dry boxes (20ft, 40ft, 45ft HC)',
-        'Flat racks & open tops for oversized breakbulk',
-        'Certified cargo lashing & weight distribution'
+        'Breakbulk vessel chartering & berth coordination at KPT & PQA',
+        'Certified heavy lift crane operations & professional stevedoring',
+        'Out-of-gauge (OOG) flat rack, open top & platform container securing'
       ],
-      specs: ['Inventory: Dry, Open Top, Flat Rack', 'Cargo: Heavy Lift & Machinery', 'Standard: ISO Certified']
+      specs: ['Cargo: BreakBulk, Heavy Lift & OOG', 'Ports: KPT & Port Qasim Berths', 'Standard: Marine Surveyor Certified']
     },
     {
       id: 'custom-clearance',
       number: '04',
-      title: 'Custom Clearance & Compliance',
-      tagline: 'Zero Delays, Precise Tariff Classification & PSW Filing',
+      title: 'Clearing Agent & Customs Brokerage',
+      tagline: 'Authorized Customs Clearing Agent with Accelerated PSW Green Channel',
       image: '/images/custom_clearance.jpg',
       icon: FileCheck,
-      badge: 'Licensed Customs Broker',
-      description: 'Authorized customs brokerage delivering frictionless import and export clearance across all Pakistani seaports, air freight units, and dry ports.',
+      badge: 'Licensed Clearing Agent',
+      description: 'Authorized customs clearing agent delivering frictionless import and export clearance across all Pakistani seaports, air freight units, and dry ports via automated Pakistan Single Window (PSW).',
       highlights: [
-        'Licensed customs brokerage at all Pakistani seaports & airports',
+        'Licensed customs clearing agent at all Pakistani seaports & airports',
         'HS code classification, duty exemption & tax optimization',
-        'Direct automated Pakistan Single Window (PSW) filing'
+        'Direct automated Pakistan Single Window (PSW) filing & green channel release'
       ],
       specs: ['System: Pakistan Single Window (PSW)', 'Turnaround: 24–48 Hours', 'Compliance: 100% Audit-Proof']
     },
     {
       id: 'transportation',
       number: '05',
-      title: 'Inland Transportation & Fleet',
-      tagline: 'Diverse Heavy Fleet with Real-Time Satellite GPS',
+      title: 'Transportation & Inland Fleet',
+      tagline: 'Diverse Heavy Haulage Fleet with Real-Time Satellite GPS',
       image: '/images/transportation.jpg',
       icon: Truck,
-      badge: 'Nationwide Drayage',
-      description: 'Dedicated fleet of modern prime movers, multi-axle trailers, and chassis delivering seamless overland transport from port terminals to industrial hubs.',
+      badge: 'Transportation & Drayage',
+      description: 'Dedicated fleet of modern prime movers, multi-axle trailers, and container chassis delivering seamless overland transport from port terminals to industrial hubs across Pakistan.',
       highlights: [
         'Prime movers, multi-axle trailers & container chassis',
         'Long-haul transit from Karachi to upcountry dry ports',
-        '24/7 Satellite GPS tracking & route monitoring'
+        '24/7 Satellite GPS tracking & real-time route monitoring'
       ],
       specs: ['Fleet: Prime Movers & Heavy Trailers', 'Coverage: Nationwide Pakistan', 'Tracking: 24/7 Satellite GPS']
     },
