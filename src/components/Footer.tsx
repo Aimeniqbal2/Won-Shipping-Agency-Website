@@ -125,11 +125,19 @@ export const Footer: React.FC<FooterProps> = ({ onOpenQuote }) => {
                   0339-2421717
                 </a>
               </div>
-              <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-[#EA580C] shrink-0" />
-                <a href="mailto:info@wonshippingagencies.com" className="hover:text-[#EA580C] transition-colors break-all font-medium">
-                  info@wonshippingagencies.com
-                </a>
+              <div className="flex items-start gap-2.5">
+                <Mail className="w-4 h-4 text-[#EA580C] shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <a href="mailto:info@wonshippingagencies.com?cc=anas@wonshippingagencies.com,bdm@wonshippingagencies.com" className="hover:text-[#EA580C] transition-colors break-all font-medium block">
+                    info@wonshippingagencies.com
+                  </a>
+                  <a href="mailto:anas@wonshippingagencies.com?cc=info@wonshippingagencies.com,bdm@wonshippingagencies.com" className="hover:text-[#EA580C] transition-colors break-all font-medium block text-slate-500">
+                    anas@wonshippingagencies.com
+                  </a>
+                  <a href="mailto:bdm@wonshippingagencies.com?cc=info@wonshippingagencies.com,anas@wonshippingagencies.com" className="hover:text-[#EA580C] transition-colors break-all font-medium block text-slate-500">
+                    bdm@wonshippingagencies.com
+                  </a>
+                </div>
               </div>
               <div className="flex items-center gap-2.5">
                 <Globe className="w-4 h-4 text-[#0284C7] shrink-0" />

@@ -15,7 +15,7 @@ import {
   Loader2,
   MessageSquare
 } from 'lucide-react';
-import { submitLiveInquiry, OFFICIAL_CONTACT } from '../utils/formSubmit';
+import { submitLiveInquiry, buildMultiRecipientMailto, OFFICIAL_CONTACT } from '../utils/formSubmit';
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -296,7 +296,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
               <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-2 text-xs text-slate-400 font-light">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Live direct transmission to info@wonshippingagencies.com</span>
+                  <span>Live direct transmission to info@, anas@, bdm@wonshippingagencies.com</span>
                 </div>
 
                 <button
@@ -334,14 +334,14 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                 Reference ID: #{quoteReference}
               </p>
               <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-md mx-auto font-light leading-relaxed">
-                Thank you <strong className="text-amber-300">{name || 'valued partner'}</strong>. Your detailed request has been transmitted live to <strong className="text-cyan-300">info@wonshippingagencies.com</strong> for <strong className="text-white">{service}</strong> from {origin} to {destination}.
+                Thank you <strong className="text-amber-300">{name || 'valued partner'}</strong>. Your detailed request has been transmitted live to <strong className="text-cyan-300">info@wonshippingagencies.com</strong>, <strong className="text-cyan-300">anas@wonshippingagencies.com</strong>, and <strong className="text-cyan-300">bdm@wonshippingagencies.com</strong> for <strong className="text-white">{service}</strong> from {origin} to {destination}.
               </p>
             </div>
 
             <div className="p-5 rounded-2xl bg-white/5 border border-white/10 max-w-md mx-auto text-left space-y-2 text-xs text-slate-300">
               <p><strong className="text-white">Route:</strong> {origin} ➔ {destination}</p>
               <p><strong className="text-white">Cargo:</strong> {cargoType} ({weight}, {containerCount})</p>
-              <p><strong className="text-white">Live Dispatched To:</strong> info@wonshippingagencies.com</p>
+              <p><strong className="text-white">Live Dispatched To:</strong> info@, anas@, bdm@wonshippingagencies.com</p>
               <p><strong className="text-white">Direct Hotline:</strong> 0339-2421717</p>
             </div>
 
@@ -365,11 +365,24 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
               </a>
 
               <a
-                href={`mailto:info@wonshippingagencies.com?subject=Freight Quote Request [${quoteReference}] - ${encodeURIComponent(service)}&body=Name: ${encodeURIComponent(name)}%0ACompany: ${encodeURIComponent(company)}%0APhone: ${encodeURIComponent(phone)}%0ARoute: ${encodeURIComponent(origin)} to ${encodeURIComponent(destination)}%0ACargo: ${encodeURIComponent(cargoType)} (${encodeURIComponent(weight)})`}
+                href={buildMultiRecipientMailto({
+                  formType: 'Detailed Freight Quote',
+                  name,
+                  company,
+                  phone,
+                  email,
+                  service,
+                  origin,
+                  destination,
+                  cargoType,
+                  weight,
+                  equipment: containerCount,
+                  message: notes
+                }, quoteReference)}
                 className="liquid-glass-pill hover:border-cyan-400 px-5 py-3 rounded-xl text-xs font-semibold text-cyan-300 flex items-center gap-2 cursor-pointer"
               >
                 <Mail className="w-4 h-4" />
-                <span>info@wonshippingagencies.com</span>
+                <span>Open in Email (info@, anas@, bdm@)</span>
               </a>
 
               <button

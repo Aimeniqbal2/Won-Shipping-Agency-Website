@@ -622,7 +622,7 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
                         {isSubmittingQuickQuote ? (
                           <>
                             <Loader2 className="w-4 h-4 animate-spin" />
-                            <span>Transmitting to info@wonshippingagencies.com...</span>
+                            <span>Transmitting to info@, anas@, bdm@wonshippingagencies.com...</span>
                           </>
                         ) : (
                           <>
@@ -660,7 +660,7 @@ export const HeroScrollSection: React.FC<HeroScrollSectionProps> = ({
                           Ref #{quoteReference}
                         </p>
                         <p className="text-[11px] text-slate-200 mt-1.5 leading-relaxed">
-                          Your inquiry has been emailed directly to <strong className="text-white">info@wonshippingagencies.com</strong> for <strong>{quickQuote.origin} ➔ {quickQuote.destination}</strong> ({quickQuote.service}). Our Karachi desk will respond to <strong>{quickQuote.contact}</strong> promptly.
+                          Your inquiry has been emailed directly to <strong className="text-white">info@</strong>, <strong className="text-white">anas@</strong>, and <strong className="text-white">bdm@wonshippingagencies.com</strong> for <strong>{quickQuote.origin} ➔ {quickQuote.destination}</strong> ({quickQuote.service}). Our Karachi desk will respond to <strong>{quickQuote.contact}</strong> promptly.
                         </p>
                       </div>
                       <div className="flex flex-wrap items-center justify-center gap-2 pt-1">

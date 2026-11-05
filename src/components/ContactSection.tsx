@@ -13,7 +13,7 @@ import {
   Loader2,
   MessageSquare
 } from 'lucide-react';
-import { submitLiveInquiry, OFFICIAL_CONTACT } from '../utils/formSubmit';
+import { submitLiveInquiry, buildMultiRecipientMailto, OFFICIAL_CONTACT } from '../utils/formSubmit';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -136,24 +136,36 @@ export const ContactSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Email */}
+              {/* Executive Emails Directory */}
               <a 
                 href={OFFICIAL_CONTACT.mailtoLink} 
                 className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-orange-400/50 hover:bg-orange-50/20 transition-colors group"
+                title="Click to Email all 3 Executive Desks"
               >
-                <div className="w-10 h-10 rounded-xl bg-orange-50 text-[#EA580C] flex items-center justify-center shrink-0 border border-orange-200 group-hover:scale-105 transition-transform">
+                <div className="w-10 h-10 rounded-xl bg-orange-50 text-[#EA580C] flex items-center justify-center shrink-0 border border-orange-200 group-hover:scale-105 transition-transform mt-0.5">
                   <Mail className="w-5 h-5" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 space-y-1">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
-                      Direct Operations Email
+                      Executive Desks (All 3 Connected)
                     </span>
                     <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#EA580C]" />
                   </div>
-                  <p className="text-xs sm:text-sm text-[#0B2545] font-semibold group-hover:text-[#EA580C] transition-colors break-all">
-                    info@wonshippingagencies.com
-                  </p>
+                  <div className="text-xs text-[#0B2545] font-medium space-y-0.5 pt-0.5">
+                    <p className="font-semibold text-slate-800 flex items-center justify-between">
+                      <span>info@wonshippingagencies.com</span>
+                      <span className="text-[10px] font-mono text-slate-500 font-normal">Operations Desk</span>
+                    </p>
+                    <p className="font-semibold text-slate-800 flex items-center justify-between">
+                      <span>anas@wonshippingagencies.com</span>
+                      <span className="text-[10px] font-mono text-slate-500 font-normal">Management</span>
+                    </p>
+                    <p className="font-semibold text-slate-800 flex items-center justify-between">
+                      <span>bdm@wonshippingagencies.com</span>
+                      <span className="text-[10px] font-mono text-slate-500 font-normal">Business Dev</span>
+                    </p>
+                  </div>
                 </div>
               </a>
 
@@ -204,7 +216,7 @@ export const ContactSection: React.FC = () => {
                     Send a Direct Inquiry
                   </h3>
                   <p className="text-xs text-slate-500 font-normal">
-                    Direct transmission to info@wonshippingagencies.com. Managing desk responds within 2 hours.
+                    Live multi-desk dispatch to info@, anas@, and bdm@wonshippingagencies.com. Executive response within 2 hours.
                   </p>
                 </div>
 
@@ -291,7 +303,7 @@ export const ContactSection: React.FC = () => {
                 <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                   <div className="flex items-center gap-2 text-xs text-slate-500 font-normal">
                     <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                    <span>Live transmission to info@wonshippingagencies.com</span>
+                    <span>Live transmission to info@, anas@, bdm@wonshippingagencies.com</span>
                   </div>
 
                   <button
@@ -326,14 +338,14 @@ export const ContactSection: React.FC = () => {
                     Reference ID: #{refId}
                   </p>
                   <p className="text-xs sm:text-sm text-slate-600 mt-2 max-w-md mx-auto font-normal leading-relaxed">
-                    Thank you <strong className="text-[#EA580C]">{formData.name}</strong>. Your inquiry has been emailed directly to <strong className="text-[#0B2545]">info@wonshippingagencies.com</strong>. Our executive desk will connect with you shortly.
+                    Thank you <strong className="text-[#EA580C]">{formData.name}</strong>. Your inquiry has been emailed directly to our executive management desks: <strong className="text-[#0B2545]">info@</strong>, <strong className="text-[#0B2545]">anas@</strong>, and <strong className="text-[#0B2545]">bdm@wonshippingagencies.com</strong>.
                   </p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 max-w-md mx-auto text-xs text-slate-700 text-left space-y-1">
                   <p><strong className="text-[#0B2545]">Service:</strong> {formData.subject}</p>
                   <p><strong className="text-[#0B2545]">Client Phone:</strong> {formData.phone}</p>
-                  <p><strong className="text-[#0B2545]">Dispatched To:</strong> info@wonshippingagencies.com</p>
+                  <p><strong className="text-[#0B2545]">Dispatched To:</strong> info@, anas@, bdm@wonshippingagencies.com</p>
                   <p><strong className="text-[#0B2545]">Desk Hotline:</strong> 0339-2421717</p>
                 </div>
 
@@ -354,6 +366,21 @@ export const ContactSection: React.FC = () => {
                   >
                     <Phone className="w-4 h-4" />
                     <span>Call 0339-2421717</span>
+                  </a>
+
+                  <a
+                    href={buildMultiRecipientMailto({
+                      formType: 'Contact & Agency Inquiry',
+                      name: formData.name,
+                      email: formData.email,
+                      phone: formData.phone,
+                      service: formData.subject,
+                      message: formData.message
+                    }, refId)}
+                    className="px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 flex items-center gap-2 transition-all"
+                  >
+                    <Mail className="w-4 h-4" />
+                    <span>Open in Email (All 3 Desks)</span>
                   </a>
 
                   <button
